@@ -39,7 +39,7 @@ public class UserController {
         User user = usrService.findByEmail(email)
                                     .orElseThrow(()->new Exception("No User with email : "+email));
         usrService.delete(user.getEmail());
-        return ResponseEntity.ok().body("User with Email : "+email+" deleted with success!");  
+        return ResponseEntity.ok().body("User with Email :  "+email+" deleted with success!");  
     }
 	
 	@PostMapping(value="/adduser")
