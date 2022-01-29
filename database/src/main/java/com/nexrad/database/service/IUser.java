@@ -6,6 +6,7 @@ import com.nexrad.database.model.User;
 public interface IUser {
 	List<User> getAllUsers();
 	Optional<User> findByEmail(String email);
+	Optional<User> findByUserID(String email);
 	User save(User usr);
 	void delete(String email);
 	

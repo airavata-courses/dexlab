@@ -39,5 +39,11 @@ public class UserService implements IUser{
 		userRepo.deleteByEmail(email);
 		
 	}
+
+	@Override
+	public Optional<User> findByUserID(String userID) {
+		// TODO Auto-generated method stub
+		return userRepo.findByUserID(userID);
+	}
 	
 }

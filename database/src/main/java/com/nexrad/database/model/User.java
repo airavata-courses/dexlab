@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.NaturalId;
 import org.springframework.stereotype.Component;
 
 
@@ -22,12 +24,30 @@ public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+	private Long id;
+	@NaturalId
+	@Column(nullable=false, unique = true,length=60)
+	private String userID;
     private String name;
     @Column(nullable=false, unique = true, length = 50)
 	private String email;
+    private String password;
+    
+    //Getters and setters
 	public String getName() {
 		return name;
+	}
+	public String getUserID() {
+		return userID;
+	}
+	public void setUserID(String userID) {
+		this.userID = userID;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	public void setName(String name) {
 		this.name = name;
@@ -41,6 +61,8 @@ public class User implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "User [name=" + name + ", email=" + email + "]";
+		return "User [UserID=" + userID + ", name=" + name + ", email=" + email + "]";
 	}
+	
+
 }

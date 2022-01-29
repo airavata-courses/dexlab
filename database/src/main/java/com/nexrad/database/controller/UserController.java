@@ -28,14 +28,14 @@ public class UserController {
         return usrService.getAllUsers();
     }
 	
-	@GetMapping(value="/getuser/{email}")
-	ResponseEntity<User> getUser(@PathVariable("email") String email) throws Exception {
-		User user = usrService.findByEmail(email).orElseThrow(()->new Exception("No User with email : "+email));
+	@GetMapping(value="/getuser/{userID}")
+	ResponseEntity<User> getUser(@PathVariable("userID") String uID) throws Exception {
+		User user = usrService.findByUserID(uID).orElseThrow(()->new Exception("No User with userID : "+uID));
 		return ResponseEntity.ok().body(user);
 	}
 	
 	@DeleteMapping(value="/deleteuser/{email}")
-    ResponseEntity<String> deleteProduct( @PathVariable("email") String email) throws Exception {
+    ResponseEntity<String> deleteProduct(@PathVariable("email") String email) throws Exception {
         User user = usrService.findByEmail(email)
                                     .orElseThrow(()->new Exception("No User with email : "+email));
         usrService.delete(user.getEmail());
