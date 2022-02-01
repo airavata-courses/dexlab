@@ -3,7 +3,6 @@ import nexradaws
 from flask import Flask, jsonify, request, send_file
 
 #conn = nexradaws.NexradAwsInterface()
-
 app = Flask(__name__)
 
 @app.route('/radars')
