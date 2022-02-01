@@ -7,6 +7,7 @@ conn = nexradaws.NexradAwsInterface()
 
 availscans = conn.get_avail_scans('2021', '05', '31', 'KTLX')
 print("There are {} NEXRAD files available for May 31st, 2021 for the KTLX radar.\n".format(len(availscans)))
+
 #print(availscans[0:4])
 considered_scans = []
 considered_scans.append(availscans[0])
@@ -14,7 +15,6 @@ considered_scans.append(availscans[89])
 considered_scans.append(availscans[178])
 considered_scans.append(availscans[326])
 res = conn.download(considered_scans, './')
-#res = conn.download(availscans, './')
 
 print(res.success)
 
