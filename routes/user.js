@@ -3,7 +3,7 @@ const router = express.Router();
 const {
     v5: uuidv4
 } = require('uuid');
-const constants =  require('../lib/constants')
+const constants = require('../lib/constants')
 const request = require('request')
 
 router.post('/signup', async (req, res) => {
@@ -57,31 +57,39 @@ router.post('/login', async (req, res) => {
             }
         }
         request(options, (error, response, body) => {
-            body = JSON.parse(body)
             if (error) {
                 res.status(503).send({
                     error: error,
                     status: "Something went wrong"
                 })
             } else if (response.statusCode == 200) {
-                console.log(typeof(body.password), req.body.password)
+                body = JSON.parse(body)
+                console.log(typeof (body.password), req.body.password)
                 if (body.password == req.body.password) {
                     res.status(200).send({
                         message: "Success",
                         userid: uniqueid,
                         email: req.body.email
                     })
-                } else{
+                } else {
                     res.status(401).send({
-                    "message": "Invalid emailid/password"
-                })
+                        "message": "Invalid emailid/password"
+                    })
                 }
             } else if (response.statusCode == 400) {
                 res.status(400).send({
                     "message": "Email id doesn't exist, please signup to access the services"
                 })
-            }else{
-                res.status(response.statusCode).send(body)   
+            } else {
+                if (response)
+                    res.status(response.statusCode).send({
+                        error: JSON.parse(body)
+                    })
+                else {
+                    res.status(503).send({
+                        message: "Something went wrong"
+                    })
+                }
             }
         })
     } catch (e) {

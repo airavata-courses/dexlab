@@ -11,13 +11,12 @@ function getActivity(data) {
             }
         }
         request(options, (error, response, body) => {
-            // body = JSON.parse(body)
             if (error) {
                 reject(error)
             } else if (response.statusCode == 200) {
                 body = JSON.parse(body);
                 body.history = true
-                resolve(JSON.parse(body))
+                resolve(body)
             } else if (response.statusCode == 400) {
                 resolve({
                     "history": false,
@@ -37,14 +36,16 @@ function setActivity(headers, data) {
                 token: "jbasdjbj"
             },
             body: {
-                userid: headers.uniqueid,
-                activity: data
+                userID: headers.uniqueid,
+                userLogs: data
             },
             json: true
         }
         request(options, (error, response, body) => {
+            console.log(error, body, response.statusCode)
             // body = JSON.parse(body)
             if (error) {
+                console.log(error)
                 reject(error)
             } else if (response.statusCode == 200) {
                 resolve(true)
