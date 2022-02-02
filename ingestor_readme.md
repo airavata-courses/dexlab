@@ -19,4 +19,4 @@ The response will be a JSON array of radar IDs available on the given day:
 $ curl 'http://localhost:5000/plot' -X POST --data-raw $'{\n"date": "2021-12-04",\n"radar": "KAKQ"\n}'
 ```
 
-The response will be an image of plot in PNG format. The value for response header `Content-Type` will be `image/png`.
+The response will be an image of the plot(displaying reflectivity) in PNG format. The value for response header `Content-Type` will be `image/png`.
