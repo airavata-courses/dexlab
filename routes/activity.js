@@ -22,11 +22,14 @@ router.post('/set', async (req, res) => {
         let userActivity = await userService.getActivity(req.headers);
         console.log(userActivity)
         req.body.timestamp = new Date().getTime()
+        
         if (userActivity.history) {
-            if (userActivity.data.length > 20) {
-                userActivity.data.pop()
+            userActivity.userLogs = JSON.parse(userActivity.userLogs);
+            
+            if (userActivity.userLogs.data.length > 20) {
+                userActivity.userLogs.data.pop()
             }
-            userActivity.data.unshift(req.body);
+            userActivity.userLogs.data.unshift(req.body);
         } else {
             userActivity = {
                 data: []
