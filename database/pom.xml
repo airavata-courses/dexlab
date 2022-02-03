@@ -51,6 +51,10 @@
 		    <artifactId>hibernate-validator</artifactId>
 		    <version>6.0.13.Final</version>
 	  </dependency>
+		<dependency>
+	        <groupId>org.mariadb.jdbc</groupId>
+	        <artifactId>mariadb-java-client</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
