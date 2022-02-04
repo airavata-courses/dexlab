@@ -27,9 +27,11 @@ RUN /venv/bin/conda-unpack
 #FROM alpine AS runtime
 FROM debian:buster AS runtime
 
+WORKDIR /app
 # Copy /venv from the previous stage:
 COPY --from=build /venv /venv
 COPY server.py ./
+COPY ingestor.py ./
 
 # When image is run, run the code with the environment
 # activated:
