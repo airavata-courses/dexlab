@@ -1,30 +1,46 @@
 from flask import Flask, jsonify, request, send_file
 import nexradaws
+from ingestor import save_file, get_scans
 
+conn = nexradaws.NexradAwsInterface()
 
-#conn = nexradaws.NexradAwsInterface()
 app = Flask(__name__)
 
-@app.route('/radars')
+def split_date(date):
+    date = date.split('-')
+    return date[0], date[1], date[2]
+
+@app.route('/radars', methods=["POST"])
 def get_radars():
-    radar_list = conn.get_avail_radars('2021', '05', '21')
-    print(radar_list)
+    body = request.get_json(force=True)
+
+    try:
+        date = body['date']
+        year, month, day = split_date(date)
+    except KeyError:
+        return "date key must be present", 400
+
+    radar_list = conn.get_avail_radars(year, month, day)
+
     response = {
             'radars': radar_list
     }
+
     return jsonify(response)
 
 @app.route('/plot', methods=['GET', 'POST'])
 def get_plot():
-    """
     body = request.get_json(force=True)
-    response = {
-            'success': True
-    }
-    return jsonify(response)
-    """
-    return send_file('./o.png', as_attachment=False)
 
+    try:
+        date = body['date']
+        year, month, day = split_date(date)
+        radar = body['radar']
+    except KeyError:
+        return "date and radar must be part of the body", 400
+
+    file = save_file(conn, year, month, day, radar)
+    return send_file(file, as_attachment=False)
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
+    app.run(host="0.0.0.0")
