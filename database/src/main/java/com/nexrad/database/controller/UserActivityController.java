@@ -15,13 +15,18 @@ import com.nexrad.database.model.User;
 import com.nexrad.database.model.UserActivity;
 import com.nexrad.database.service.UserActivityService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/activity")
+@Api(value = "UserActivitycontroller", description = "Click to See REST APIs related to User Interaction with the system")
 public class UserActivityController {
 	
 	@Autowired
 	UserActivityService usrActivityService;
 	
+	@ApiOperation(value = "Get User Interaction details from System ", response = Iterable.class)
 	@GetMapping(value="/getactivity/{userID}")
 	ResponseEntity<?> getUser(@PathVariable("userID") String uID) throws Exception {
 		try {
@@ -34,7 +39,7 @@ public class UserActivityController {
 		
 	}
 	
-
+	@ApiOperation(value = "Add User Interaction details to the  System ", response = Iterable.class)
 	@PostMapping(value="/addactivity")
     ResponseEntity<?> User(@RequestBody JsonNode userActivity) {
 		try {
