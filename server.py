@@ -1,16 +1,35 @@
 from flask import Flask, jsonify, request, send_file
 import nexradaws
 from ingestor import save_file, get_scans
+from flasgger import Swagger, swag_from
 
 conn = nexradaws.NexradAwsInterface()
 
 app = Flask(__name__)
+
+template = {
+  "swagger": "2.0",
+  "info": {
+    "title": "Ingestor API",
+    "description": "Endpoints available with Ingestor",
+    "contact": {
+      "responsibleOrganization": "dexlab",
+      "responsibleDeveloper": "Shubham Thakur",
+      "email": "sdthakur@iu.edu",
+      "url": "https://github.com/airavata-courses/dexlab/tree/ingestor",
+    },
+    "version": "0.0.1"
+  }
+}
+
+swagger = Swagger(app, template=template)
 
 def split_date(date):
     date = date.split('-')
     return date[0], date[1], date[2]
 
 @app.route('/radars', methods=["POST"])
+@swag_from('radar.yml')
 def get_radars():
     body = request.get_json(force=True)
 
@@ -28,7 +47,8 @@ def get_radars():
 
     return jsonify(response)
 
-@app.route('/plot', methods=['GET', 'POST'])
+@app.route('/plot', methods=['POST'])
+@swag_from('plot.yml')
 def get_plot():
     body = request.get_json(force=True)
 
