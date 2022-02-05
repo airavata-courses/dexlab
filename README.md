@@ -1,16 +1,21 @@
-# dexlab
-Spring 2022 Project
+cURL request for APIs for Dashboard:
 
-Team members:
+1. Fetch radar API:-
 
-Sanket Bailmare - sbailmar@iu.edu
+Request-type- 'GET'
+URL - localhost:3001/radar/get
 
-Kumar Saurabh - ksaurabh@iu.edu
+Header:-
+uniqueid: c0696a04-be8a-5f18-84e2-dcb565dc18c6
+date: 2022-01-30
 
-Shubham Thakur - sdthakur@iu.edu
+2. Plot API:-
 
-ToDo List:
-1. Napkin Diagram
-2. Project Introduction
-3. Architecture Diagram
-4. Mockups (Visual Views)
+Request-type - 'POST'
+URl - localhost:3001/radar/plot
+
+Body-
+{
+"date": "2022-01-05",
+"radar": "KTLX"
+}
