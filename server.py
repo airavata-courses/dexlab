@@ -1,8 +1,9 @@
 from flask import Flask, jsonify, request, send_file
 import nexradaws
-from ingestor import save_file
 from flasgger import Swagger, swag_from
+from ingestor import save_file
 
+# pylint: disable=unused-argument
 def create_app(test_config=None):
 
     conn = nexradaws.NexradAwsInterface()
@@ -24,7 +25,7 @@ def create_app(test_config=None):
       }
     }
 
-    swagger = Swagger(app, template=template)
+    Swagger(app, template=template)
 
     def split_date(date):
         date = date.split('-')
