@@ -27,6 +27,5 @@ jobs:
           python-version: 3.8
           auto-activate-base: false
       - run: |
-          conda info
-          conda list
+          pytest
              
