@@ -4,9 +4,6 @@ from matplotlib import pyplot as plt
 from datetime import datetime
 import nexradaws
 
-def get_scans(conn, year, month, day, radar_id):
-    return conn.get_avail_scans(year, month, day, radar_id)
-
 def save_file(conn, year, month, day, radar_id):
     filename = f"{year}-{month}-{day}-{radar_id}.png"
 
