@@ -6,6 +6,43 @@ const {
 const constants = require('../lib/constants')
 const request = require('request')
 
+/**
+ * @openapi
+ * /signup:
+ *   post:
+ *     tags:
+ *       - Account management
+ *     requestBody:
+ *       description: Register a user on Dexlab
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 required: true
+ *               email:
+ *                 type: string
+ *                 required: true
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 message:
+ *                   default: "Success"
+ *       400:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 message:
+ *                   default: "Email id already exist, Please try with different id"
+ */
 router.post('/signup', async (req, res) => {
     try {
         req.body.userID = uuidv4(req.body.email, constants.MY_NAMESPACE);
@@ -47,6 +84,51 @@ router.post('/signup', async (req, res) => {
     }
 })
 
+
+/**
+ * @openapi
+ * /login:
+ *   post:
+ *     tags:
+ *       - Account management
+ *     requestBody:
+ *       description: Login to your Dexlab account
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 required: true
+ *               password:
+ *                 type: string
+ *                 required: true
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   default: "Success"
+ *                 userid:
+ *                   type: string
+ *                   description: Unique ID for this user
+ *                 email:
+ *                   type: string
+ *                   required: true
+ *       400:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 message:
+ *                   default: "Email id doesn't exist, please signup to access the services"
+ */
 router.post('/login', async (req, res) => {
     try {
         let uniqueid = uuidv4(req.body.email, constants.MY_NAMESPACE);
