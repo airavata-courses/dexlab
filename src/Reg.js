@@ -65,12 +65,12 @@ class Reg extends Component {
         email: this.state.Email
       })
 
-    }).then((Response) => {
-      console.log(typeof(Response.status))
-      if (Response.status == 200)
-            // this.props.history.push("/dashboard");
-            // this.routeChange();
-            console.log(window.location.assign("http://localhost:3000/dashboard"))
+    }).then((response) => {
+      return response.json();
+    })
+    .then(value => {console.log(value);
+      if (value.message == 'Success'){
+            console.log(window.location.assign(`http://localhost:3000/dashboard?userid=${value.userid}`))}
         else if(Response.Status == 400)
           alert('User already exist')
         else
@@ -101,13 +101,13 @@ class Reg extends Component {
                       <Input type="text"  onChange={this.Name} placeholder="Enter Name" />
                     </InputGroup>
                     <InputGroup className="mb-3">
-                      <Input type="text"  onChange={this.Email} placeholder="Enter Email" />
+                      <Input type="email"  onChange={this.Email} placeholder="Enter Email" />
                     </InputGroup>
                     <InputGroup className="mb-3">
                       <Input type="password"  onChange={this.Password} placeholder="Enter Password" />
                     </InputGroup>
                     <InputGroup className="mb-4">
-                      <Input type="text"  onChange={this.Confirm_Password} placeholder="Confirm Password" />
+                      <Input type="password"  onChange={this.Confirm_Password} placeholder="Confirm Password" />
                     </InputGroup>
                     <Button  onClick={this.register}  color="success" block>Create Account</Button>
                   </Form>
