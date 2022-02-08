@@ -12,8 +12,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  example-3:
-    name: Ex3 Linux
+  lint-and-test:
+    name: Lint and Test
     runs-on: "ubuntu-latest"
     defaults:
       run:
@@ -23,10 +23,11 @@ jobs:
       - uses: conda-incubator/setup-miniconda@v2
         with:
           activate-environment: pyart_env
-          environment-file: ./environment.yml
+          environment-file: ./ingestor/environment.yml
           python-version: 3.8
           auto-activate-base: false
       - run: |
+          cd ingestor
           pylint *.py
           pytest
              
