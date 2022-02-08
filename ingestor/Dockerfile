@@ -36,6 +36,6 @@ COPY ingestor.py ./
 # When image is run, run the code with the environment
 # activated:
 SHELL ["/bin/bash", "-c"]
-ENTRYPOINT source /venv/bin/activate && FLASK_APP=server.py flask run
+ENTRYPOINT source /venv/bin/activate && FLASK_APP=server.py flask run -h 0.0.0.0 -p 5000
 #RUN chmod +x ./entrypoint.sh
 #ENTRYPOINT ["/bin/sh", "-c", "source /venv/bin/activate && python server.py"]
