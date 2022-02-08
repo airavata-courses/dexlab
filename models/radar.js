@@ -26,10 +26,14 @@ function radars(data) {
             })
         }
         request.post(options, (error, response, body) => {
-            console.log(error, body, response.statusCode)
+            //console.log(error, body, response.statusCode)
             // body = JSON.parse(body)
             if (error) {
+              if (typeof(error) === 'string') {
                 console.log(error)
+              } else {
+                console.log(error.message)
+              }
                 reject(error)
             } else if (response.statusCode == 200) {
                 resolve(body)
