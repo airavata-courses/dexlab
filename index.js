@@ -14,6 +14,24 @@ const userRoute = require('./routes/user')
 const userActivity = require('./routes/activity')
 const radarData = require('./routes/radar')
 
+// Generate documentation from code
+const swaggerJsDoc = require('swagger-jsdoc')
+const swaggerUI = require('swagger-ui-express')
+
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Welcome to Dexlab user services',
+      version: '1.0.0',
+    },
+  },
+  apis: ['./routes/*.js'],
+};
+
+
+const openapiSpecification = swaggerJsDoc(options);
+
 app.use(bodyParser.json())
 app.use(cors({
   origin: '*',
@@ -22,6 +40,7 @@ app.use(cors({
   }
 ));
 
+app.use('/apidocs', swaggerUI.serve, swaggerUI.setup(openapiSpecification))
 app.use('/user', userRoute);
 app.use('/activity', userActivity);
 app.use('/radar', radarData);
