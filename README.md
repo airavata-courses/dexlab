@@ -27,6 +27,9 @@ $ docker run -d --name orm -p 8000:8000 kausau/nexrad_orm_update
 
 #### Running without docker (not recommended)
 
+ORM Service needs [JAVA] (https://www.java.com/en/download/manual.jsp) to install and setup dependencies. Hence the first step is to install `JAVA` on your system. 
+Second thing is to install [ Maven ] (https://maven.apache.org/download.cgi)
+
 Clone the repository:
 
 ```bash
@@ -43,11 +46,6 @@ Replace the 1st line with : ```spring.datasource.url=jdbc:mysql://localhost:3306
 change directory in and come inside : dexlab/database
 
 RUN command : ```bash $ mvn clean install```
-
-ORM Service needs [JAVA] (https://www.java.com/en/download/manual.jsp) to install and setup dependencies. Hence the first step is to install `JAVA` on your system. 
-Second thing is to install [ Maven ] (https://maven.apache.org/download.cgi)
-
-
 
 
 Initialize the environment once `conda` is installed on the system:
