@@ -25,16 +25,21 @@ router.post('/set', async (req, res) => {
         
         if (userActivity.history) {
             userActivity.userLogs = JSON.parse(userActivity.userLogs);
-            
-            if (userActivity.userLogs.data.length > 20) {
+            userActivity.userLogs = userActivity.userLogs.userLogs;
+            console.log(userActivity.userLogs)
+            if (userActivity.userLogs.data.length > 100) {
                 userActivity.userLogs.data.pop()
             }
+            let len = userActivity.userLogs.data.length
+            req.body.id = len + 1
             userActivity.userLogs.data.unshift(req.body);
         } else {
             userActivity = {
+                userLogs :{
                 data: []
-            }
-            userActivity.data.push(req.body);
+            }}
+            req.body.id = 1
+            userActivity.userLogs.data.push(req.body);
         }
 
         let set = await userService.setActivity(req.headers, JSON.stringify(userActivity));
