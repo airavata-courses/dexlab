@@ -48,25 +48,6 @@ change directory in and come inside : dexlab/database
 RUN command : ```bash $ mvn clean install```
 
 
-Initialize the environment once `conda` is installed on the system:
-
-```bash
-$ cd ingestor # Switch to the ingestor directory
-$ conda env create -f environment.yml
-```
-
-This will create an environment called `pyart_env`. Once the environment is created successfully, we need to activate the environment:
-
-```bash
-$ conda activate pyart_env
-```
-
-We can now start the flask app:
-
-```bash
-$ FLASK_APP=server.py flask run
-```
-
 ### Usage
 
 ORM service is build to allow the following operations in the system
