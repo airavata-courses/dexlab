@@ -27,7 +27,7 @@ jobs:
         tags: latest
         registry: docker.io
         directory: database
-        dockerfile: kausau/nexrad_orm_update
+        dockerfile: database/Dockerfile
         username: kausau
         password: 36706a13-98ab-4363-800f-fbd9415216d6
              
