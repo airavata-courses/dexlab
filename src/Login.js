@@ -2,7 +2,6 @@
 import axios from 'axios'; 
 import React, { Component } from 'react';
 import './App.css';
-
 import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 
 class Login extends Component {
@@ -27,11 +26,9 @@ class Login extends Component {
         const data = { email:this.state.Email, password: this.state.Password };    
             axios.post(apiUrl, data)    
             .then((result) => {    
-                console.log(result.data);   
-                const user =result.data;  
-                console.log(result.data.message);  
-                if (result.data.message == 'Success')    
-                    console.log(window.location.assign("http://localhost:3000/dashboard"))
+                const user = result.data;  
+                if (result.data.message == 'Success'){
+                    console.log(window.location.assign(`http://localhost:3000/dashboard?userid=${result.data.userid}`))}
             })
             .catch(error => {
                 alert('Invalid User');

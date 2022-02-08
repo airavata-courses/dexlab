@@ -16,6 +16,7 @@ const Dashboard  = () => {
         const [img, setImage] = useState();
         const radarURL = "http://localhost:3001/radar/get/";
         const imageURL = "http://localhost:3001/radar/plot";
+        const activityUrl = "http://localhost:3001/activity/set"
         const getImage = () =>{       
             let data = {
                 "date": date.toISOString().split('T')[0],
@@ -30,6 +31,27 @@ const Dashboard  = () => {
                 body : JSON.stringify(data)})
             .then((resp) => {
                 if (resp.status >= 200 && resp.status <= 299) {
+                    console.log(window.location.href);
+                    let params = new URLSearchParams(document.location.search);
+                    let name = params.get("userid");
+                    console.log(name)
+
+                    fetch(`${activityUrl}`,{
+                        method: 'POST',
+                        headers : {
+                        'Content-Type': 'application/json',
+                        'Accept': 'image/png',
+                        'uniqueid': name
+                        },
+                        body : JSON.stringify({
+                            "date": new Date().toISOString().split('T')[0],
+                            "location": val,
+                            "time": new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds()
+                        })
+                    })
+                    .then(resp => {
+                        console.log(resp)
+                    })
                     return resp.blob();
                 } else {
                 throw new Error(resp.statusText);
