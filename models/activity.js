@@ -10,7 +10,8 @@ function getActivity(data) {
                 token: "jbasdjbj"
             }
         }
-        request(options, (error, response, body) => {
+        request.get(options, (error, response, body) => {
+            console.log(error, response.statusCode, body)
             if (error) {
                 reject(error)
             } else if (response.statusCode == 200) {
@@ -41,8 +42,7 @@ function setActivity(headers, data) {
             },
             json: true
         }
-        request(options, (error, response, body) => {
-            console.log(error, body, response.statusCode)
+        request.post(options, (error, response, body) => {
             if (error) {
                 console.log(error)
                 reject(error)

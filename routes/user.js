@@ -20,7 +20,6 @@ router.post('/signup', async (req, res) => {
             body: req.body
         }
         request(options, (error, response, body) => {
-            console.log(response,"=-=-=-=-=-=-")
             if (error) {
                 res.status(503).send({
                     error: error,
@@ -29,6 +28,8 @@ router.post('/signup', async (req, res) => {
             } else if (response.statusCode == 200) {
                 const val = {
                     message: "Success",
+                    userid: req.body.userID,
+                    email: req.body.email
                 }
                 res.status(200).send(val)
             } else if (response.statusCode == 400) {

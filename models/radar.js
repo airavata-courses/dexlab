@@ -15,8 +15,18 @@ function radars(data) {
             },
             json: true
         }
-        request(options, (error, response, body) => {
-            // console.log(error, body, response.statusCode)
+        if (data.test) {
+            resolve({
+                radars: [
+                    "FOP1",
+                    "KABR",
+                    "KABX",
+                    "KAMA",
+                ]
+            })
+        }
+        request.post(options, (error, response, body) => {
+            console.log(error, body, response.statusCode)
             // body = JSON.parse(body)
             if (error) {
                 console.log(error)
