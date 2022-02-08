@@ -30,4 +30,22 @@ jobs:
           cd ingestor
           pylint server.py
           pytest
+  build:
+    runs-on: ubuntu-latest
+    #strategy:
+    #  fail-fast: false
+    #  matrix:
+    #    python-version: ["3.8"]
+    steps:
+    - uses: actions/checkout@v2
+    - name: build and push docker image
+      uses: mr-smithers-excellent/docker-build-push@v5
+      with:
+        image: vinayakasgadag/decoders-datasource
+        tags: latest
+        registry: docker.io
+        directory: ingestor
+        dockerfile: ingestor/Dockerfile
+        username: sbmthakur
+        password: 4ef776e8-82d4-471e-830d-0069bfa99d47
              
