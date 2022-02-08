@@ -4,10 +4,6 @@ Ingestor is responsible for getting the data from Nexrad's S3 bucket and generat
 
 **The plot helps us to understand the reflectivity pattern for the given date.**
 
-## Getting Started
-
-## Prerequisites
-
 ### Installation
 
 Clone the repository:
@@ -74,3 +70,20 @@ The response will be an image of the plot(displaying reflectivity) in PNG format
 Sample plot:
 
 ![A sample image](./sample_plot.png)
+
+### Local development
+
+For \*nix based systems, run the following commands:
+
+```bash
+$ cd ingestor
+$ bash start_liver_server
+```
+
+Run the following commands from a command prompt if you are on Windows:
+
+```
+set FLASK_APP=server.py
+set FLASK_ENV=development
+flask run
+```
