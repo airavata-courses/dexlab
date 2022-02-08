@@ -1,8 +1,10 @@
 **/__pycache__
-
 *.png
 KTLX*
 KAMA*
 KCAE*
 KBLX*
 KABR*
+
+# Allow
+!ingestor/sample_plot.png
