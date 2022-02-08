@@ -41,7 +41,7 @@ jobs:
     - name: build and push docker image
       uses: mr-smithers-excellent/docker-build-push@v5
       with:
-        image: vinayakasgadag/decoders-datasource
+        image: sbmthakur/ingestor
         tags: latest
         registry: docker.io
         directory: ingestor
