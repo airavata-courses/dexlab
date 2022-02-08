@@ -14,6 +14,7 @@ const Dashboard  = () => {
         const [opt,setOpt] = useState(options); 
         const [val, setVal] = useState(opt[0]);
         const [img, setImage] = useState();
+        const [userID,setUserID] = useState();
         const radarURL = "http://localhost:3001/radar/get/";
         const imageURL = "http://localhost:3001/radar/plot";
         const activityUrl = "http://localhost:3001/activity/set"
@@ -35,7 +36,7 @@ const Dashboard  = () => {
                     let params = new URLSearchParams(document.location.search);
                     let name = params.get("userid");
                     console.log(name)
-
+                    setUserID(name)
                     fetch(`${activityUrl}`,{
                         method: 'POST',
                         headers : {
@@ -95,6 +96,13 @@ const Dashboard  = () => {
             setDate(e)
             getOptions()
         }
+
+        const getHistory = () =>{
+            let params = new URLSearchParams(document.location.search);
+            let userid = params.get("userid");
+            console.log(window.location.assign(`http://localhost:3000/UserHistory?userid=${userid}`))
+        }
+
         useEffect(() => {
             getOptions();
         },[]);
@@ -103,6 +111,9 @@ const Dashboard  = () => {
             <div class="row" className="mb-2 pageheading">
                 <div class="col-sm-12 btn btn-primary">
                 </div>
+            </div>
+            <div className="mb-2">
+                 <Button variant= "success" className='btn' onClick={() => { getHistory(); }}>Past History</Button>
             </div>
             <h3>Select Date</h3>
             <div>

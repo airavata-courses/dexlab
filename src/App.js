@@ -2,7 +2,9 @@ import React from 'react';
 import './App.css';  
 import Login from './Login';  
 import Reg from './Reg';  
-import Dashboard from './Dashboard';  
+import Dashboard from './Dashboard';
+import UserHistory from './UserHistory'
+  
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';   
 
 function App() {  
@@ -23,7 +25,8 @@ function App() {
           <Route exact path='/signup' element={<Reg/>} />    
         </Routes>    
         <Routes>  
-        <Route exact path='/Dashboard' element={<Dashboard/>} />    
+        <Route exact path='/Dashboard' element={<Dashboard/>} /> 
+        <Route exact path='/UserHistory' element={<UserHistory/>} /> 
         </Routes>  
       </div>    
     </Router>   
