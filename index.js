@@ -26,6 +26,10 @@ app.use('/user', userRoute);
 app.use('/activity', userActivity);
 app.use('/radar', radarData);
 
+app.get('*', function(req, res) {
+  res.sendFile('index.html', {root: path.join(__dirname, '/frontend/build/')});
+});
+
 app.listen(port, () => {
   console.log(`Example app listening at http://0.0.0.0:${port}`);
 });
