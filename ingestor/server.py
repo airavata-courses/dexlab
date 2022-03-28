@@ -1,12 +1,20 @@
 from flask import Flask, jsonify, request, send_file
 import nexradaws
+import os
 from flasgger import Swagger, swag_from
 from ingestor import save_file
+from merra import SessionWithHeaderRedirection, download_nc4
+from datetime import date
 
 # pylint: disable=unused-argument
 def create_app(test_config=None):
 
     conn = nexradaws.NexradAwsInterface()
+
+    # create session with the user credentials that will be used to authenticate access to the data
+    username = os.environ.get("NASA_USERNAME")
+    password = os.environ.get("NASA_PASSWORD")
+    session = SessionWithHeaderRedirection(username, password)
 
     app = Flask(__name__)
 
@@ -30,6 +38,58 @@ def create_app(test_config=None):
     def split_date(date):
         date = date.split('-')
         return date[0], date[1], date[2]
+
+    @app.route('/merra', methods=["GET"])
+    @swag_from('nasa_plot.yml')
+    def merra():
+        args = request.args
+        print(args.get("month"))
+        print(args.get("year"))
+        month = args.get("month")
+
+        if month:
+            try:
+                month_val = int(month)
+            except ValueError:
+                #raise ValueError('date', 'Invalid month')
+                return 'Invalid month', 400
+
+            if month_val > 12:
+                #raise ValueError('date', 'Invalid year or month')
+                return 'Invalid month', 400
+
+            if len(month) == 1:
+                month = '0' + month
+        else:
+            #raise ValueError('date', 'Invalid year or month')
+            return 'Invalid month', 400
+
+        year = args.get("year")
+
+        if year:
+            try:
+                year_val = int(year)
+            except ValueError:
+                #raise ValueError('date', 'Invalid year')
+                return 'Invalid year', 400
+
+            if year_val < 1981 or year_val > date.today().year:
+                #raise ValueError('date', 'Invalid year')
+                return 'Invalid year', 400
+        else:
+            #raise ValueError('date', 'Invalid year')
+            return 'Invalid year', 400
+
+        year = args.get("year")
+        plot_type = args.get("plot_type")
+
+        try:
+            plot_file = download_nc4(session, year, month, plot_type)
+        except ValueError as err:
+            err_type, err_message = err.args
+            return err_message, 400
+
+        return send_file(plot_file, as_attachment=False)
 
     @app.route('/radars', methods=["POST"])
     @swag_from('radar.yml')

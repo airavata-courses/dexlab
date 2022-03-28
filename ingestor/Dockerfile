@@ -32,8 +32,10 @@ WORKDIR /app
 COPY --from=build /venv /venv
 COPY server.py ./
 COPY ingestor.py ./
+COPY merra.py ./
 COPY radar.yml ./
 COPY plot.yml ./
+COPY nasa_plot.yml ./
 
 # When image is run, run the code with the environment
 # activated:
