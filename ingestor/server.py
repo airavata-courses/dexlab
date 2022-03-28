@@ -14,7 +14,11 @@ def create_app(test_config=None):
     # create session with the user credentials that will be used to authenticate access to the data
     username = os.environ.get("NASA_USERNAME")
     password = os.environ.get("NASA_PASSWORD")
-    session = SessionWithHeaderRedirection(username, password)
+
+    if username and password:
+        session = SessionWithHeaderRedirection(username, password)
+    else:
+        raise SystemExit("Credentials for earthdata not set")
 
     app = Flask(__name__)
 
