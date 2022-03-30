@@ -19,6 +19,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @RestController
@@ -27,6 +28,8 @@ import org.springframework.http.ResponseEntity;
 public class UserController {
 	@Autowired
 	private UserService usrService;
+	@Autowired
+	private PasswordEncoder bcryptEncoder;
 		
 	@ApiOperation(value = "Get list of all the Users in the System ", response = Iterable.class)
 	@ApiResponses(value = { 
@@ -70,6 +73,7 @@ public class UserController {
     ResponseEntity<?> User(@RequestBody User user) {
 		try {
 		System.out.println(user);
+		user.setPassword(bcryptEncoder.encode(user.getPassword()));
         User addedusr = usrService.save(user);
         return ResponseEntity.ok().body("Added user: "+ addedusr);
 		}

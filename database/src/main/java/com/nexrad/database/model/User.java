@@ -30,10 +30,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	
-//	@GeneratedValue(strategy = GenerationType.AUTO)
-//	private Long id;
-	
+
 	@Id
 	@Column(nullable=false, unique = true,length=60)
 	private String userID;

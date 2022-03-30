@@ -12,9 +12,10 @@ import com.nexrad.database.model.User;
 @Repository
 @Transactional
 @Component("UserRepository")
-public interface UserRepository extends JpaRepository<User, Long>{
+public interface UserRepository extends JpaRepository<User, String>{
 	
     Optional<User> findByEmail(String email);
+    User findByName(String name);
 	Optional<User> deleteByEmail(String email);
 	Optional<User> findByUserID(String userID);
 }
