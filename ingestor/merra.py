@@ -37,18 +37,7 @@ class SessionWithHeaderRedirection(requests.Session):
 
         return
 
-
-
-
-def plot(session, filename, year, month, plot_type='COCL'):
-
-    if not plot_type:
-        plot_type = 'COCL'
-
-
-    if plot_type not in {'COCL', 'COLS', 'COEM', 'TO3'}:
-        print('sdfdsf')
-        raise ValueError('plot', 'Invalid plot type')
+def plot(session, filename, year, month, plot_type):
 
     data = Dataset(filename, more="r")
     lons = data.variables['lon'][:]
@@ -88,7 +77,11 @@ def plot(session, filename, year, month, plot_type='COCL'):
     #plot_merra_data(COLS, 'COLS')
     #plot_merra_data(TO3, 'TO3')
 
-def download_nc4(session, year,month, plot_type):
+def download_nc4(session, year,month, plot_type='COCL'):
+
+    if plot_type not in {'COCL', 'COLS', 'COEM', 'TO3'}:
+        raise ValueError('plot', 'Invalid plot type')
+
     # the url of the file we wish to retrieve
     url = f"https://goldsmr4.gesdisc.eosdis.nasa.gov/opendap/MERRA2_MONTHLY/M2TMNXCHM.5.12.4/{year}/MERRA2_400.tavgM_2d_chm_Nx.{year}{month}.nc4.nc4"
 
@@ -113,6 +106,8 @@ def download_nc4(session, year,month, plot_type):
             with open(filename, 'wb') as fd:
                 for chunk in response.iter_content(chunk_size=1024*1024):
                     fd.write(chunk)
+
+        print(filename)
 
         plot_file = plot(session, filename, year, month, plot_type)
 
