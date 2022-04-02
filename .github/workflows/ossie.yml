@@ -1,0 +1,14 @@
+on:
+  push:
+    branches:
+      - nasa-ingestor
+  release:
+    types:
+      - created
+
+jobs:
+  ossie_job:
+    runs-on: ubuntu-latest
+    name: Audit Python dependencies 
+    steps:
+      - uses: sbmthakur/Ossie-GHA@main
