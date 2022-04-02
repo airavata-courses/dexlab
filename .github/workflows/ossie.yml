@@ -9,6 +9,9 @@ on:
 jobs:
   ossie_job:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ingestor
     name: Audit Python dependencies 
     steps:
       - uses: sbmthakur/Ossie-GHA@main
