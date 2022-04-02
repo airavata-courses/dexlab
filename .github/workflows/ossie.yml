@@ -9,11 +9,11 @@ on:
 jobs:
   ossie_job:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ingestor
     name: Audit Python dependencies 
     steps:
+      - uses: actions/checkout@v2
+      - name: Set directory
+        working-directory: ./ingestor
       - uses: sbmthakur/Ossie-GHA@main
         with:
           OSSIEBOT_ID: ${{ secrets.OSSIEBOT_ID }}
