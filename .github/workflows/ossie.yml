@@ -12,3 +12,5 @@ jobs:
     name: Audit Python dependencies 
     steps:
       - uses: sbmthakur/Ossie-GHA@main
+        with:
+          OSSIEBOT_ID: ${{ secrets.OSSIEBOT_ID }}
