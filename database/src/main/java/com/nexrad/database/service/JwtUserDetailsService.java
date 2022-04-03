@@ -1,6 +1,7 @@
 package com.nexrad.database.service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,11 +23,14 @@ public class JwtUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
-		User user = userRepository.findByName(username);
-		if (user == null) {
+		Optional<User> optional = userRepository.findByEmail(username);
+		if (optional == null) {
 			throw new UsernameNotFoundException("User not found with username: " + username);
 		}
-		return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(),
-				new ArrayList<>());
+		User user =optional.get();
+		System.out.println(user);
+		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),new ArrayList<>());    
+		
+		
 	}
 }

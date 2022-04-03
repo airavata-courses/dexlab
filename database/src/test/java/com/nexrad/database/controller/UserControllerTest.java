@@ -50,7 +50,7 @@ public class UserControllerTest {
         User user = new User();
         Optional<User> opt =Optional.of(user);
         when(userService.findByUserID(anyString())).thenReturn(opt);
-        ResponseEntity<User> responseEntity  = userController.getUser(anyString());
+        ResponseEntity<?> responseEntity  = userController.getUser(anyString());
         assertThat(responseEntity.getStatusCodeValue()).isEqualTo(200);
         
 	}
