@@ -4,7 +4,7 @@ let runtime = {
     db: {}
 };
 
-module.exports.init = () => {
+module.exports.init = async () => {
     console.log("Connecting to redis")
     runtime.db.redis = Redis.createClient({
         "host": "127.0.0.1",

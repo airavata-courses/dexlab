@@ -39,21 +39,23 @@ router.get('/get', async (req, res) => {
         tokens = JSON.parse(tokens)
         userService.getActivity(req.headers, tokens.orm_token)
             .then(result => {
+                console.log("jasdgfjbasjdfjusbadfbjbndjf")
                 if (result.history) {
-                    res.status(200).send(JSON.parse(result.userLogs));
+                    return res.status(200).send(JSON.parse(result.userLogs));
                 } else {
-                    res.status(200).send({
-                        data: []
+                    return res.status(200).send({
+                        nasa: [],
+                        radar: []
                     });
                 }
             })
             .catch(err => {
                 console.log(err)
-                res.status(503).send(err)
+                return res.status(503).send(err)
             });
     } catch (error) {
         console.log(error)
-        res.status(503).send(error)
+        return res.status(503).send(error)
     }
 
 });
@@ -92,29 +94,28 @@ router.post('/set', async (req, res) => {
         let tokens = await db.get(req.headers.uniqueid);
         tokens = JSON.parse(tokens)
         let userActivity = await userService.getActivity(req.headers, tokens.orm_token);
-
         req.body.timestamp = new Date().getTime()
         if (userActivity.history) {
             userActivity.userLogs = JSON.parse(userActivity.userLogs);
             userActivity.userLogs = userActivity.userLogs.userLogs;
             console.log(userActivity.userLogs)
-            if (userActivity.userLogs.data.length > 100) {
-                userActivity.userLogs.data.pop()
+            if (userActivity.userLogs[req.body.type].length > 100) {
+                userActivity.userLogs[req.body.type].pop()
             }
-            let len = userActivity.userLogs.data.length
+            let len = userActivity.userLogs[req.body.type].length
             req.body.id = len + 1
-            userActivity.userLogs.data.unshift(req.body);
+            userActivity.userLogs[req.body.type].unshift(req.body);
         } else {
             userActivity = {
                 userLogs: {
-                    data: []
+                    radar: [],
+                    nasa: []
                 }
             }
             req.body.id = 1
-            userActivity.userLogs.data.push(req.body);
+            userActivity.userLogs[req.body.type].push(req.body);
         }
-
-        let data = await userService.setActivity(req.headers, JSON.stringify(userActivity), user_token.orm_token);
+        let data = await userService.setActivity(req.headers, JSON.stringify(userActivity), tokens.orm_token);
         let set = data.flag
         if (set) {
             res.status(200).send({

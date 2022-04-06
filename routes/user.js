@@ -65,6 +65,7 @@ router.post('/signup', async (req, res) => {
             },
             body: JSON.stringify(req.body)
         });
+        console.log("In hereeeeeeee","----------------------", uuidv4(req.body.email, constants.MY_NAMESPACE))
         if (response.status == 200) {
             let resToken = await response.json();
             const val = {
@@ -77,6 +78,7 @@ router.post('/signup', async (req, res) => {
                 })
             }
             // await db.setex(req.body.userID, process.env.user_redis_expiry, JSON.stringify({
+            console.log(resToken.token)
             await db.setex(req.body.userID, 1000000000, JSON.stringify({
                 user_token: val.token,
                 orm_token: resToken.token
@@ -160,6 +162,7 @@ router.post('/login', async (req, res) => {
         });
         const data = await response.json();
         const flag = await bcrypt.compare(req.body.password, data.password)
+        console.log(data.token, data)
         if (response.status == 200) {
             if (flag) {
                 const value = {

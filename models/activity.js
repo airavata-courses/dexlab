@@ -11,21 +11,22 @@ async function getActivity(data, orm_token) {
                     'Content-Type': 'application/json',
                     'Accept': '*/*',
                     'Authorization': `Bearer ${orm_token}`
-                    // 'Authorization': `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTYW5rZXQiLCJleHAiOjE2NDg4Mjc2MTEsImlhdCI6MTY0ODc0MTIxMX0.R2m4lfl9pL-w1iBgOnSkhaXc588WzVwLgU4Dq4-TP00soyDHjDsMVJgKIMmUVM3p3y2jMY2SaO7bvtQ6eBN0_A`
                 }
             });
+            console.log(response, `Bearer ${orm_token}`)
             if (response.status == 200) {
                 let value = await response.json();
                 body = value;
                 body.history = true
                 resolve(body)
-            } else if (response.status == 400) {
+            } else {
                 resolve({
                     "history": false,
                     "message": "No history"
                 })
             }
         } catch (error) {
+            console.log(error, new Date(), '\n')
             reject(error)
         }
     })
@@ -58,6 +59,7 @@ async function setActivity(headers, data, orm_token) {
                 resolve(resp)
             }
         } catch (error) {
+            console.log(error, new Date(), '\n')
             reject(error)
         }
     })
