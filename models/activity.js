@@ -1,57 +1,67 @@
-const request = require('request')
 const constants = require('../lib/constants')
+const fetch = require('node-fetch')
 
-function getActivity(data) {
-    return new Promise((resolve, reject) => {
-        const options = {
-            url: `${constants.activityGetUrl}${data.uniqueid}`,
-            method: "GET",
-            headers: {
-                token: "jbasdjbj"
-            }
-        }
-        request.get(options, (error, response, body) => {
-            console.log(error, response.statusCode, body)
-            if (error) {
-                reject(error)
-            } else if (response.statusCode == 200) {
-                body = JSON.parse(body);
+async function getActivity(data, orm_token) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            console.log(orm_token)
+            const response = await fetch(`${constants.activityGetUrl}${data.uniqueid}`, {
+                method: 'get',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': '*/*',
+                    'Authorization': `Bearer ${orm_token}`
+                }
+            });
+            console.log(response, `Bearer ${orm_token}`)
+            if (response.status == 200) {
+                let value = await response.json();
+                body = value;
                 body.history = true
                 resolve(body)
-            } else if (response.statusCode == 400) {
+            } else {
                 resolve({
                     "history": false,
                     "message": "No history"
                 })
             }
-        })
+        } catch (error) {
+            console.log(error, new Date(), '\n')
+            reject(error)
+        }
     })
 }
 
-function setActivity(headers, data) {
-    return new Promise((resolve, reject) => {
-        const options = {
-            url: `${constants.activitySetUrl}`,
-            method: "POST",
-            headers: {
-                token: "jbasdjbj"
-            },
-            body: {
-                userID: headers.uniqueid,
-                userLogs: data
-            },
-            json: true
-        }
-        request.post(options, (error, response, body) => {
-            if (error) {
-                console.log(error)
-                reject(error)
-            } else if (response.statusCode == 200) {
-                resolve(true)
-            } else if (response.statusCode == 400) {
-                resolve(false)
+async function setActivity(headers, data, orm_token) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            console.log(orm_token)
+            const response = await fetch(`${constants.activitySetUrl}`, {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': '*/*',
+                    'Authorization': `Bearer ${orm_token}`
+                },
+                body: JSON.stringify({
+                    userID: headers.uniqueid,
+                    userLogs: data
+                })
+            });
+            resp = {
+                status: response.status,
+                flag: false
             }
-        })
+            if (response.status == 200) {
+                resp.flag = true
+                resolve(resp)
+            } else {
+                resolve(resp)
+            }
+        } catch (error) {
+            console.log(error, new Date(), '\n')
+            reject(error)
+        }
     })
 }
 

@@ -1,9 +1,10 @@
 const path = require('path')
 const express = require('express');
 const app = express();
-const port = 3001;
+const port = 3002;
 const bodyParser = require('body-parser');
 const cors = require('cors')
+const conn = require('./services/init')
 
 const staticPath = path.join(__dirname, '/frontend/build')
 app.use(express.static(staticPath))
@@ -50,5 +51,6 @@ app.get('*', function(req, res) {
 });
 
 app.listen(port, () => {
+  conn.init();
   console.log(`Example app listening at http://0.0.0.0:${port}`);
 });

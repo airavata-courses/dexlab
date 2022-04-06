@@ -2,6 +2,21 @@ const express = require('express');
 const router = express.Router();
 
 const userService = require('../models/activity');
+const validator = require('../middlewares/validator').validator
+const db = require('../utils/db').services
+
+router.use('/', async (req, res, next) => {
+    try {
+        let auth = await validator(req.headers)
+        if (auth.validated) {
+            next()
+        } else {
+            res.status(auth.status).send(auth.message)
+        }
+    } catch (error) {
+        console.log(error)
+    }
+})
 
 /**
  * @openapi
@@ -18,18 +33,31 @@ const userService = require('../models/activity');
  *       200:
  *         description: Returns user logs
  */
-router.get('/get', function (req, res) {
-    userService.getActivity(req.headers)
-        .then(result => {
-            if (result.history) {
-                res.status(200).send(JSON.parse(result.userLogs))
-            } else {
-                res.status(200).send({
-                    data: []
-                })
-            }
-        })
-        .catch(err => res.status(503).send(err));
+router.get('/get', async (req, res) => {
+    try {
+        let tokens = await db.get(req.headers.uniqueid);
+        tokens = JSON.parse(tokens)
+        userService.getActivity(req.headers, tokens.orm_token)
+            .then(result => {
+                console.log("jasdgfjbasjdfjusbadfbjbndjf")
+                if (result.history) {
+                    return res.status(200).send(JSON.parse(result.userLogs));
+                } else {
+                    return res.status(200).send({
+                        nasa: [],
+                        radar: []
+                    });
+                }
+            })
+            .catch(err => {
+                console.log(err)
+                return res.status(503).send(err)
+            });
+    } catch (error) {
+        console.log(error)
+        return res.status(503).send(error)
+    }
+
 });
 
 /**
@@ -63,38 +91,43 @@ router.get('/get', function (req, res) {
  */
 router.post('/set', async (req, res) => {
     try {
-        let userActivity = await userService.getActivity(req.headers);
-        console.log(userActivity)
+        let tokens = await db.get(req.headers.uniqueid);
+        tokens = JSON.parse(tokens)
+        let userActivity = await userService.getActivity(req.headers, tokens.orm_token);
         req.body.timestamp = new Date().getTime()
-        
         if (userActivity.history) {
             userActivity.userLogs = JSON.parse(userActivity.userLogs);
             userActivity.userLogs = userActivity.userLogs.userLogs;
             console.log(userActivity.userLogs)
-            if (userActivity.userLogs.data.length > 100) {
-                userActivity.userLogs.data.pop()
+            if (userActivity.userLogs[req.body.type].length > 100) {
+                userActivity.userLogs[req.body.type].pop()
             }
-            let len = userActivity.userLogs.data.length
+            let len = userActivity.userLogs[req.body.type].length
             req.body.id = len + 1
-            userActivity.userLogs.data.unshift(req.body);
+            userActivity.userLogs[req.body.type].unshift(req.body);
         } else {
             userActivity = {
-                userLogs :{
-                data: []
-            }}
+                userLogs: {
+                    radar: [],
+                    nasa: []
+                }
+            }
             req.body.id = 1
-            userActivity.userLogs.data.push(req.body);
+            userActivity.userLogs[req.body.type].push(req.body);
         }
-
-        let set = await userService.setActivity(req.headers, JSON.stringify(userActivity));
-        console.log(set)
+        let data = await userService.setActivity(req.headers, JSON.stringify(userActivity), tokens.orm_token);
+        let set = data.flag
         if (set) {
             res.status(200).send({
                 "message": "success"
             })
+        } else if (data.status == 401) {
+            res.status(401).send({
+                "message": "Token expired"
+            })
         } else {
             res.status(400).send({
-                "message": "failure"
+                "message": "Failed to update activity"
             })
         }
     } catch (error) {
