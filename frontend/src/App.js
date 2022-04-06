@@ -2,9 +2,7 @@ import React from 'react';
 import './App.css';
 import styled from "styled-components";
 import { AccountBox } from "./accountBox";  
-import Login from './Login';  
-import Reg from './Reg';  
-import LoginForm from './accountBox/loginForm';
+import LaunchTabs  from "./tabsPage"
 import Dashboard from './Dashboard';
 import UserHistory from './UserHistory'
 // import {Route, Switch } from "react-router";
@@ -30,29 +28,30 @@ function App() {
         height: "100vh",
     };
   return (  
+    <div style={myStyle}>   
     <Router>
-      <div style={myStyle}>
-    
-     
+      
       <AppContainer>
       <Switch>
-        <Route path={'/'} >
+        <Route exact path="/" >
           <AccountBox/>
         </Route>
-        <Route path={'/signup'} >          
+        <Route path="/signup" >          
           <AccountBox/>
-          </Route>        
-        <Route  path={'/Dashboard'}>
+          </Route>  
+        <Route  path="/tabs">
+          <LaunchTabs/>
+        </Route>      
+        <Route  path="/dashboard">
           <Dashboard/>
         </Route> 
-        <Route  path={'/UserHistory'}>
+        <Route  path="/userhistory">
           <UserHistory/>
-          </Route>         
+        </Route>         
       </Switch>
-      </AppContainer>   
-     </div>
-    
+      </AppContainer> 
     </Router> 
+    </div>
   );  
 }  
 

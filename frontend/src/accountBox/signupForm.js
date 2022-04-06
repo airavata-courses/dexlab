@@ -81,7 +81,8 @@ class SignupForm extends Component {
     .then(value => {console.log(value);
 
       if (value.message == 'Success'){
-            console.log(window.location.assign(`http://localhost:3001/dashboard?userid=${value.userid}`))
+            console.log(window.location.assign("http://localhost:3000/tabs"));
+            // console.log(window.location.assign(`http://localhost:3001/dashboard?userid=${value.userid}`))
           }
         else if(Response.Status == 400)
           alert('User already exist')

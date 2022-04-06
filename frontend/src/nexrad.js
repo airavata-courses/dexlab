@@ -6,9 +6,17 @@ import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import { Button, List } from 'reactstrap';
 import { withRouter } from "react-router-dom";
+import styled from "styled-components";
 // import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 
-const Dashboard  = () => {
+const CalendarContainer = styled.div`
+  opacity: 1
+`;
+const DropContainer = styled.div`
+  opacity: 1
+`;
+
+const Nexrad  = () => {
         let options = [];
         let defaultOption = options[0];
         const [date, setDate] = useState(new Date());    
@@ -98,39 +106,70 @@ const Dashboard  = () => {
             getOptions()
         }
 
-        const getHistory = () =>{
-            let params = new URLSearchParams(document.location.search);
-            let userid = params.get("userid");
-            console.log(window.location.assign(`http://localhost:3001/UserHistory?userid=${userid}`))
+        const h3Style = {
+        marginLeft:80,
+        color:'#E5E5E5',
+         fontSize: 40,     
         }
-
         useEffect(() => {
             getOptions();
         },[]);
         return (
-            <>   
-            <div class="row" className="mb-2 pageheading">
-                <div class="col-sm-12 btn btn-primary">
+            <> 
+            <div class="container">
+                <div class="row ">
+                    <div class="col-md-6 align-top-center">
+
+                            <h3 style = {h3Style}>Select Date</h3>
+
+                    </div>
+                    <div class="col-md-6 align-top-center">
+
+                        <h3 style = {{marginLeft : 220, color:'#E5E5E5',fontSize: 40}} >Select Radar</h3>
+                    </div>
                 </div>
-            </div>
-            <div className="mb-2">
-                 <Button variant= "success" className='btn' onClick={() => { getHistory(); }}>Past History</Button>
-            </div>
-            <h3>Select Date</h3>
-            <div>
-                <Calendar onChange={settingDate} value={date} />
-            </div>
-            <div class="row" className="mb-2 pageheading">
-                <div class="col-sm-12 btn btn-primary">
+            
+                <div class="row ">
+                    <div class="col-sm align-top-center">
+                        <div class="row">
+                            <h1></h1>
+                        </div>
+                        <div class="row">
+                        <CalendarContainer>
+                        <Calendar onChange={settingDate} value={date} />
+                        
+                        </CalendarContainer>
+                        </div>
+                    </div>
+                    <div class="col-sm align-top-center">
+                        <div class="row">
+                            <h1></h1>
+                        </div>
+                        <div class="row">
+                            <h1></h1>
+                        </div>
+                        <div class="row">
+                            <DropContainer>
+                             <Dropdown options={opt} onChange={dropDown} value={val} placeholder="Select an option" />
+                             </DropContainer>
+                        </div>
+                    </div>
                 </div>
+            
             </div>
-            <h3>Select Radar</h3>
-            <Dropdown options={opt} onChange={dropDown} value={val} placeholder="Select an option" />
-            <h1>Click to see reflectivity!</h1>
-            <div className="mb-2">
-                 <Button variant= "success" className='btn' onClick={() => { getImage(); }}>See Refectivity</Button>
-            </div>
-                 {img ? <img src={img} /> : null}
+       
+            
+
+
+                <br/>
+                <h1 style = {{color:'#E5E5E5',fontSize: 40}}>Click to see reflectivity!</h1>
+                <br/>
+                <div >
+                    <div >
+                        <Button variant= "success" className='btn' onClick={() => { getImage(); }}>See Refectivity</Button>
+                    </div>
+                    {img ? <img src={img} /> : null}
+                </div>
             </>
             
         );
@@ -138,4 +177,4 @@ const Dashboard  = () => {
 }
 
 
-export default withRouter(Dashboard);
+export default withRouter(Nexrad);

@@ -8,7 +8,7 @@ import { Button, List } from 'reactstrap';
 import { withRouter } from "react-router-dom";
 // import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 
-const Dashboard  = () => {
+const NASA  = () => {
         let options = [];
         let defaultOption = options[0];
         const [date, setDate] = useState(new Date());    
@@ -109,10 +109,6 @@ const Dashboard  = () => {
         },[]);
         return (
             <>   
-            <div class="row" className="mb-2 pageheading">
-                <div class="col-sm-12 btn btn-primary">
-                </div>
-            </div>
             <div className="mb-2">
                  <Button variant= "success" className='btn' onClick={() => { getHistory(); }}>Past History</Button>
             </div>
@@ -138,4 +134,4 @@ const Dashboard  = () => {
 }
 
 
-export default withRouter(Dashboard);
+export default withRouter(NASA);

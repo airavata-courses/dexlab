@@ -14,10 +14,10 @@ const UserHistory  = () => {
         setTable(action.map(
             (info)=>{
                
-                return(<tr key={info.id}>
-                        <td >{info.date}</td>
-                        <td>{info.time}</td>
-                        <td>{info.location}</td>
+                return(<tr key={info.id} >
+                        <td style={{color:'white'}}>{info.date}</td>
+                        <td style={{color:'white'}}>{info.time}</td>
+                        <td style={{color:'white'}}>{info.location}</td>
                     </tr>)
 
             }
@@ -52,14 +52,14 @@ const UserHistory  = () => {
         };   
     useEffect(() => {
             getHistory();
-        },[]);
+        },[getHistory()]);
     return (
         <>
             <div>
-            <Button variant= "success" className='btn' onClick={() => { getHistory(); }}>Get</Button>
+            {/* <Button variant= "success" className='btn' onClick={() => { getHistory(); }}>Get</Button> */}
 
             <div>
-            <table class="table table-striped">
+            <table class="table table-striped" style={{color:'white'}}>
                 <thead>
                     <tr>
                     <th>Date</th>
@@ -68,9 +68,7 @@ const UserHistory  = () => {
                     </tr>
                 </thead>
                 <tbody>
-                 
                     {table}
-                    
                 </tbody>
             </table>
              

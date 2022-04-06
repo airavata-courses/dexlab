@@ -12,67 +12,26 @@ import { Marginer } from "../marginer";
 import { AccountContext } from "./accountContext";
 import { withRouter } from "react-router-dom";
 
-const iniState={
-    Email: '',
-    Password: '',
-    emailError: "",
-    passwordError: ""
-}
-
 class LoginForm extends Component {
     static contextType = AccountContext;
     constructor(props) {
         super(props);
-        this.state = iniState
-        // this.Password = this.Password.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        // this.Email = this.Email.bind(this);
-        // this.login = this.login.bind(this);
+        this.state = {
+            Email: '',
+            Password: ''
+        }
+        this.Password = this.Password.bind(this);
+        this.Email = this.Email.bind(this);
+        this.login = this.login.bind(this);
     }
 
-    handleChange(event) {
-        const {name,value} = event.target;
-        this.setState({Email: event.target.value});
-    }
-    validate = () => {
-    let nameError = "";
-    let emailError = "";
-    // let passwordError = "";
-     
-    if (!this.state.Email) {
-      emailError = "Email cannot be blank";
-    }
-    else if (!this.state.Email.includes("@")) {
-      emailError = "invalid email";
-    }
 
-    if (emailError || nameError) {
-      this.setState({ emailError, nameError });
-      return false;
+    Email(event) {
+        this.setState({ Email: event.target.value })
     }
-
-    return true;
-  };
-  handleSubmit = event => {
-    event.preventDefault();
-    const isValid = this.validate();
-    if (isValid) {
-      console.log(this.state);
-      // clear form
-      this.setState(iniState);
+    Password(event) {
+        this.setState({ Password: event.target.value })
     }
-    else{
-        this.login();
-    }
-
-  };
-
-    // Email(event) {
-    //     this.setState({ Email: event.target.value })
-    // }
-    // Password(event) {
-    //     this.setState({ Password: event.target.value })
-    // }
     login(event) {
         const apiUrl = "http://localhost:3001/user/login"; 
         const data = { email:this.state.Email, password: this.state.Password };    
@@ -80,7 +39,8 @@ class LoginForm extends Component {
             .then((result) => {    
                 const user = result.data;  
                 if (result.data.message == 'Success'){
-                    console.log(window.location.assign(`http://localhost:3001/dashboard?userid=${result.data.userid}`))}
+                  // console.log(window.location.assign(`http://localhost:3000/tabs?userid=${result.data.userid}`))};
+                    console.log(window.location.assign(`http://localhost:3001/tabs?userid=${result.data.userid}`))}
             })
             .catch(error => {
                 alert('Invalid User');
@@ -97,9 +57,8 @@ render(){
     <BoxContainer>
       <FormContainer>
         <form>
-        <Input type="email" value={this.state.Email} onChange={this.handleChange} placeholder="Email" required/>
-        <Input type="password"  value={this.state.Password}
-            onChange={this.handleChange} placeholder="Password" required/>
+        <Input type="email"  onChange={this.Email} placeholder="Email" required/>
+        <Input type="password" onChange={this.Password} placeholder="Password" required/>
         </form>
       </FormContainer>
       <Marginer direction="vertical" margin="1.6em" />
