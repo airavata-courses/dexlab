@@ -29,14 +29,12 @@ function plot(data, cache_key) {
             })
 
             rabbitmq.consume(rabbit_q.queue, async (msg) => {
-                if (msg.content.uuid == uuid) {
-                    let b64 = Buffer.from(msg.content).toString('base64');
-                    let mimeType = 'image/png';
-                    connection.close();
-                    let image = `<img src="data:${mimeType};base64,${b64}" />`
-                    await redis.setex(cache_key, 10000000, image)
-                    resolve(image);
-                }
+                let b64 = Buffer.from(msg.content).toString('base64');
+                let mimeType = 'image/png';
+                connection.close();
+                let image = `<img src="data:${mimeType};base64,${b64}" />`
+                await redis.setex(cache_key, 10000000, image)
+                resolve(image);
             }, {
                 noAck: true
             })
