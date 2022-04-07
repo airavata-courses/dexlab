@@ -24,7 +24,8 @@ def init_rabbitmq(session):
 
     if not rmq_port:
         rmq_port = 5672
-
+    
+    print(f"{username}")
     creds = pika.PlainCredentials(username, password)
     parameters = pika.ConnectionParameters(host=rmq_host, port=rmq_port, credentials=creds)
     connection = pika.BlockingConnection(parameters=parameters)
