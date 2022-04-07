@@ -1,0 +1,39 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pythonservice
+  labels:
+    run: pythonservice
+spec:
+  ports:
+  - port: 5000
+    protocol: TCP
+  selector:
+    run: pythonservice
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pythonservice
+spec:
+  selector:
+    matchLabels:
+      run: pythonservice
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: pythonservice
+    spec:
+      containers:
+        - name: pythonservice
+          image: sbmthakur/ingestor
+          resources:
+            #requests:
+            #memory: "700Mi"
+            limits:
+              memory: "10Gi"
+          ports:
+            - containerPort: 5000
