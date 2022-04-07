@@ -17,26 +17,22 @@ function plot(data, cache_key) {
             console.log(data, new Date())
             console.log('')
             const uuid = uuidvv4();
-            let connection = await amqp.connect('amqp://149.165.159.22');
+            let connection = await amqp.connect('amqp://ingestor:dexlab@149.165.159.22');
             let rabbitmq = await connection.createChannel();
             let rabbit_q = await rabbitmq.assertQueue('', {
                 exculsive: true
             })
-
+            // const queue = 'rpc_queue_r' 
             rabbitmq.sendToQueue('rpc_queue', Buffer.from(JSON.stringify(data)), {
                 replyTo: rabbit_q.queue,
                 correlationId: uuid
             })
-
             rabbitmq.consume(rabbit_q.queue, async (msg) => {
-                if (msg.content.uuid == uuid) {
-                    let b64 = Buffer.from(msg.content).toString('base64');
-                    let mimeType = 'image/png';
-                    connection.close();
-                    let image = `<img src="data:${mimeType};base64,${b64}" />`
-                    await redis.setex(cache_key, 10000000, image)
-                    resolve(image);
-                }
+                let b64 = Buffer.from(msg.content).toString('base64');
+                console.log(msg.content, b64)
+                connection.close();
+                await redis.setex(cache_key, 10000000, b64)
+                resolve(b64);
             }, {
                 noAck: true
             })

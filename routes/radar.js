@@ -41,18 +41,40 @@ router.get('/nasa', async (req, res) => {
     try {
         let cache_key = `${req.query.year}_${req.query.month}_${req.query.type}`
         let image = await redis.get(cache_key)
-        if (image){
-            return res.send(image);
+        let plot
+        if (image) {
+            plot = image;
+        } else {
+
+
+            data = {
+                month: req.query.month,
+                year: req.query.year,
+                plot_type: req.query.type
+            }
+            plot = await nasaService(data, cache_key);
         }
-        data = {
-            month: req.query.month,
-            year: req.query.year,
-            plot_type: req.query.type
-        }
-        const plot = await nasaService(data, cache_key);
-        return res.send(plot);
+        console.log(plot)
+        require("fs").writeFile("out.png", plot, 'base64', function (err) {
+            console.log(err);
+        });
+        fs.readFile('out.png', function (err, content) {
+            if (err) {
+                res.writeHead(400, {
+                    'Content-type': 'text/html'
+                })
+                console.log(err);
+                res.end("No such image");
+            } else {
+                res.writeHead(200, {
+                    'Content-type': 'image/png'
+                });
+                res.end(content);
+            }
+        });
     } catch (error) {
         console.log(error)
+        res.status(503).send(error)
     }
 });
 
