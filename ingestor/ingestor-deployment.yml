@@ -28,7 +28,7 @@ spec:
         run: pythonservice
     spec:
       containers:
-        networkHost: true
+        hostNetwork: true
         - name: pythonservice
           image: sbmthakur/ingestor
           resources:
