@@ -29,11 +29,11 @@ function radars(data) {
             //console.log(error, body, response.statusCode)
             // body = JSON.parse(body)
             if (error) {
-              if (typeof(error) === 'string') {
-                console.log(error)
-              } else {
-                console.log(error.message)
-              }
+                if (typeof (error) === 'string') {
+                    console.log(error)
+                } else {
+                    console.log(error.message)
+                }
                 reject(error)
             } else if (response.statusCode == 200) {
                 resolve(body)
@@ -57,10 +57,15 @@ function weatherPlot(headers, data) {
             body: data,
             json: true
         }
-        request(options).pipe(fs.createWriteStream('c.png')).on('close',() => {
-            console.log("Done")
-            resolve(true)
-        });
+        request(options)
+            .pipe(fs.createWriteStream('c.png'))
+            .on('error', function (err) {
+                reject(err)
+            })
+            .on('close', () => {
+                console.log("Done")
+                resolve(true)
+            });
     })
 }
 
