@@ -6,127 +6,158 @@ import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import { Button, List } from 'reactstrap';
 import { withRouter } from "react-router-dom";
+import styled from "styled-components";
+// import ReactHtmlParser from 'react-html-parser'; 
 // import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 
-const NASA  = () => {
-        let options = [];
-        let defaultOption = options[0];
-        const [date, setDate] = useState(new Date());    
-        const [opt,setOpt] = useState(options); 
-        const [val, setVal] = useState(opt[0]);
+const CalendarContainer = styled.div`
+  opacity: 0.8
+`;
+const DropContainer = styled.div`
+  opacity: 0.8
+`;
+
+const NASA  = (props) => {
+        console.log("IN NSAS PROP")
+        console.log(props.location.state)
+        
+        console.log()
+        let years = [];
+        let months = [];
+        let radars = ['COCL', 'COEM', 'COLS', 'TO3']
+        var max = new Date().getFullYear()
+        var min = 1970
+        for (var i = max; i >= min; i--) {
+                years.push(i.toString())
+            } 
+        
+        for (var i = 1; i <= 12; i++) {
+                months.push(i.toString())
+            }
+        const [rad1, setRad1] = useState(radars[0]);
+        const [val1, setVal1] = useState(new Date().getFullYear().toString());
+        const [mon1, setMon1] = useState(new Date().getMonth().toString());
         const [img, setImage] = useState();
+        let imag = img;
         const [userID,setUserID] = useState();
-        const radarURL = "http://localhost:3001/radar/get";
-        const imageURL = "http://localhost:3001/radar/plot";
+        
+        let imageURL = "http://localhost:3001/radar/nasa";
         const activityUrl = "http://localhost:3001/activity/set"
-        const getImage = () =>{       
-            let data = {
-                "date": date.toISOString().split('T')[0],
-                "radar": val
-                }
+        const getImage = () =>{   
+            imageURL = `${imageURL}?year=${val1}&month=${mon1}&type=${rad1}`;
+            console.log(imageURL)
+  
             fetch(imageURL,{
-                method: 'POST',
+                method: 'GET',
                 headers : {
                 'Content-Type': 'application/json',
                 'Accept': 'image/png'
-                },
-                body : JSON.stringify(data)})
-            .then((resp) => {
-                if (resp.status >= 200 && resp.status <= 299) {
-                    console.log(window.location.href);
-                    let params = new URLSearchParams(document.location.search);
-                    let name = params.get("userid");
-                    console.log(name)
-                    setUserID(name)
-                    fetch(`${activityUrl}`,{
+                }})
+            .then(response => response.blob())
+            .then(blob => {
+
+                const reader = new FileReader();
+                reader.readAsDataURL(blob);
+                reader.onloadend = () => {
+                let base64data = reader.result;
+                console.log(base64data)
+                setImage(base64data)
+                 fetch(`${activityUrl}`,{
                         method: 'POST',
                         headers : {
                         'Content-Type': 'application/json',
                         'Accept': 'image/png',
-                        'uniqueid': name
+                        'uniqueid': props.location.state.userid,
+                        'token': props.location.state.token
                         },
                         body : JSON.stringify({
-                            "date": new Date().toISOString().split('T')[0],
-                            "location": val,
-                            "time": new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds()
+                            "year": val1,
+                            "month": mon1,
+                            "radar": rad1,
+                            "type":'nasa'
                         })
-                    })
-                    .then(resp => {
+                    }).then(resp => {
                         console.log(resp)
                     })
-                    return resp.blob();
-                } else {
-                throw new Error(resp.statusText);
-                }
-            })
-            .then(imageBlob => {
-                const reader = new FileReader();
-                reader.readAsDataURL(imageBlob);
-                reader.onloadend = () => {
-                let base64data = reader.result;
-                setImage(base64data)}
-            })
+                
+            }
+        })
             .catch((error) => console.log(error));
         };
-        const getOptions = () => {
-        fetch(radarURL,{
-                method: 'GET',
-                headers : {
-                'Content-Type': 'application/json',
-                'date' : new Date().toISOString().slice(0, 10)
-                }})
-            .then((resp) => {
-                if (resp.status >= 200 && resp.status <= 299) {
-                return resp.json();
-                } else {
-                throw new Error(resp.statusText);
-                }
-            })
-            .then(data => {
-                options = data.radars
-                setOpt(options)
-                setVal(options[0])
-                console.log(options)
-            })
-            .catch((error) => console.log(error));
-        };
-        const dropDown = (e) =>{
-            setVal(e.value)        
+        
+        const dropDownY = (e) =>{
+            setVal1(e.value)   
         }
-        const settingDate = (e) =>{
-            setDate(e)
-            getOptions()
+        const dropDownM = (e) =>{
+            setMon1(e.value)  
+         
         }
-
-        const getHistory = () =>{
-            let params = new URLSearchParams(document.location.search);
-            let userid = params.get("userid");
-            console.log(window.location.assign(`http://localhost:3001/UserHistory?userid=${userid}`))
+        const dropDownR = (e) =>{
+            setRad1(e.value)     
         }
-
-        useEffect(() => {
-            getOptions();
-        },[]);
+        const h3Style = {
+        marginLeft:80,
+        color:'#E5E5E5',
+        fontSize: 40,     
+        }
+        useEffect(() => 
+            // populateYears()
+        []);
         return (
-            <>   
-            <div className="mb-2">
-                 <Button variant= "success" className='btn' onClick={() => { getHistory(); }}>Past History</Button>
-            </div>
-            <h3>Select Date</h3>
-            <div>
-                <Calendar onChange={settingDate} value={date} />
-            </div>
-            <div class="row" className="mb-2 pageheading">
-                <div class="col-sm-12 btn btn-primary">
+            <> 
+            <div class="container">
+                <div class="row ">
+                    <div class="col-md">
+                            <h3 style = {h3Style}>Select Year</h3>
+                    </div>
+                    <div class="col-md">
+                        <h3 style = {{marginLeft : 100, color:'#E5E5E5',fontSize: 40}} >Select Month</h3>
+                    </div>
+                     <div class="col-md">
+
+                        <h3 style = {{marginLeft : 100, color:'#E5E5E5',fontSize: 40}} >Select Radar</h3>
+                    </div>
+                </div>
+            
+                <div class="row ">
+                    <div class="col-sm">
+                        <div class="row">
+                            <h1></h1>
+                        </div>
+                        <div class="row">
+                             <div class="col-sm">
+                         <DropContainer>
+                             <Dropdown options={years} onChange={dropDownY} value={val1} placeholder="Select an option" />
+                             </DropContainer>
+                            </div>
+                            <div class="col-sm">
+                         <DropContainer>
+                             <Dropdown options={months} onChange={dropDownM} value={mon1} placeholder="Select an option" />
+                             </DropContainer>
+                            </div>
+                            <div class="col-sm">
+                         <DropContainer>
+                             <Dropdown options={radars} onChange={dropDownR} value={rad1} placeholder="Select an option" />
+                             </DropContainer>
+                            </div>
+                        </div>
+                    </div>
+                 
                 </div>
             </div>
-            <h3>Select Radar</h3>
-            <Dropdown options={opt} onChange={dropDown} value={val} placeholder="Select an option" />
-            <h1>Click to see reflectivity!</h1>
-            <div className="mb-2">
-                 <Button variant= "success" className='btn' onClick={() => { getImage(); }}>See Refectivity</Button>
-            </div>
-                 {img ? <img src={img} /> : null}
+       
+            
+
+
+                <br/>
+                <h1 style = {{color:'#E5E5E5',fontSize: 40}}>Click to see reflectivity!</h1>
+                <br/>
+               <div >
+                    <div >
+                        <Button variant= "success" className='btn' onClick={() => { getImage(); }}>See Refectivity</Button>
+                    </div>
+                    {imag ? <img src={imag} /> : null}
+                </div>
             </>
             
         );

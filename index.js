@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors')
 const conn = require('./services/init')
 
-const staticPath = path.join(__dirname, '/frontend/build')
+const staticPath = path.join(__dirname, '/frontend/build/')
 app.use(express.static(staticPath))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))

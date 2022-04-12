@@ -10,13 +10,13 @@ import styled from "styled-components";
 // import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 
 const CalendarContainer = styled.div`
-  opacity: 1
+  opacity: 0.7;
 `;
 const DropContainer = styled.div`
-  opacity: 1
+  opacity: 0.8
 `;
 
-const Nexrad  = () => {
+const Nexrad  = (props) => {
         let options = [];
         let defaultOption = options[0];
         const [date, setDate] = useState(new Date());    
@@ -41,9 +41,11 @@ const Nexrad  = () => {
                 body : JSON.stringify(data)})
             .then((resp) => {
                 if (resp.status >= 200 && resp.status <= 299) {
-                    console.log(window.location.href);
-                    let params = new URLSearchParams(document.location.search);
-                    let name = params.get("userid");
+                    // console.log(window.location.href);
+                    // let params = new URLSearchParams(document.location.search);
+
+                    let name = props.location.state.userid;
+                    let token = props.location.state.token;
                     console.log(name)
                     setUserID(name)
                     fetch(`${activityUrl}`,{
@@ -51,12 +53,14 @@ const Nexrad  = () => {
                         headers : {
                         'Content-Type': 'application/json',
                         'Accept': 'image/png',
-                        'uniqueid': name
+                        'uniqueid': name,
+                        'token': token
                         },
                         body : JSON.stringify({
                             "date": new Date().toISOString().split('T')[0],
                             "location": val,
-                            "time": new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds()
+                            "time": new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds(),
+                            "type":'radar'
                         })
                     })
                     .then(resp => {

@@ -33,14 +33,18 @@ class LoginForm extends Component {
         this.setState({ Password: event.target.value })
     }
     login(event) {
+      console.log("hellooooooo")
         const apiUrl = "http://localhost:3001/user/login"; 
         const data = { email:this.state.Email, password: this.state.Password };    
             axios.post(apiUrl, data)    
             .then((result) => {    
+              console.log(result);
                 const user = result.data;  
                 if (result.data.message == 'Success'){
+                  this.props.history.push("/tabs", { ...user })
                   // console.log(window.location.assign(`http://localhost:3000/tabs?userid=${result.data.userid}`))};
-                    console.log(window.location.assign(`http://localhost:3001/tabs?userid=${result.data.userid}`))}
+                    // console.log(window.location.assign(`http://localhost:3001/tabs?userid=${result.data.userid}`))}
+                }
             })
             .catch(error => {
                 alert('Invalid User');

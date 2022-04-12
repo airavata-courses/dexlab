@@ -10,11 +10,11 @@ import {
 import { Marginer } from "../marginer";
 import { Redirect } from "react-router-dom";
 import { AccountContext } from "./accountContext";
-
+import { withRouter } from "react-router-dom";
 class SignupForm extends Component {
   static contextType = AccountContext;
   constructor(props) {
-    super();
+    super(props);
     this.state = {
       Name: '',
       Email: '',
@@ -79,10 +79,14 @@ class SignupForm extends Component {
       return response.json();
     })
     .then(value => {console.log(value);
-
+      console.log(value)
       if (value.message == 'Success'){
-            console.log(window.location.assign("http://localhost:3000/tabs"));
-            // console.log(window.location.assign(`http://localhost:3001/dashboard?userid=${value.userid}`))
+        // console.log(this.props)
+          this.props.history.push("/tabs", { ...value });
+
+          // alert("Account created please Login")
+            // console.log(window.location.assign("http://localhost:3000/tabs"));
+            // console.log(window.location.assign(`http://localhost:3000/`))
           }
         else if(Response.Status == 400)
           alert('User already exist')
@@ -122,4 +126,4 @@ class SignupForm extends Component {
   );
 }
 }
-export default SignupForm;
+export default withRouter(SignupForm);

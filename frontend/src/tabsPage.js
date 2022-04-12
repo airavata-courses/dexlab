@@ -15,9 +15,7 @@ const LaunchTabs = props => {
 
   const { match, history } = props;
   const { params } = match;
-  const { page } = params;
-    console.log(params);
-    console.log(page)
+
   const tabNameToIndex = {
     0: "NASA",
     1: "Nexrad",
@@ -30,22 +28,27 @@ const LaunchTabs = props => {
     Nexrad: 1,
     UserHistory : 2
   };
-  const getuserID = () =>{
-    let params = new URLSearchParams(document.location.search);
-    let userid = params.get("userid");
-    setuserID(userid);
-  }
-  React.useEffect(() => {
-            getuserID();
-        },[]);
+//   const getuserID = () =>{
+//     let params = new URLSearchParams(document.location.search);
+//     let userid = params.get("userid");
+//     setuserID(userid);
+//   }
+//   React.useEffect(() => {
+//             getuserID();
+//         },[]);
   const [selectedTab, setSelectedTab] = React.useState(indexToTabName['NASA']);
   const [userID, setuserID] = React.useState("")
 
-
+// console.log("props in tabs")
+// console.log(props.location.state)
   const handleChange = (event, newValue) => {
     let tabchangeURL= `/tabs/${tabNameToIndex[newValue]}`;
-    tabchangeURL = tabchangeURL+'?userid='+userID;
-    history.push(tabchangeURL);
+    
+    tabchangeURL = tabchangeURL
+    // console.log(tabchangeURL)
+    props.history.push(tabchangeURL, {...props.location.state})
+    // history.push(tabchangeURL);
+    // console.log(props)
     setSelectedTab(newValue);
   };
 
