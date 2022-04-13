@@ -61,6 +61,7 @@ const NASA  = (props) => {
                 reader.onloadend = () => {
                 let base64data = reader.result;
                 console.log(base64data)
+                console.log('prop',props.location.state)
                 setImage(base64data)
                  fetch(`${activityUrl}`,{
                         method: 'POST',
