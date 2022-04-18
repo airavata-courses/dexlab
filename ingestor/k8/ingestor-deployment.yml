@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pythonservice
+spec:
+  selector:
+    matchLabels:
+      run: pythonservice
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: pythonservice
+    spec:
+      hostNetwork: true
+      containers:
+        - name: pythonservice
+          image: sbmthakur/main
+          env:
+            - name: RMQ_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: ingestor-secret
+                  key: RMQ_HOST
+            - name: RMQ_PORT
+              value: "5672"
+            - name: NASA_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: ingestor-secret
+                  key: NASA_USERNAME
+            - name: NASA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ingestor-secret
+                  key: NASA_PASSWORD
+            - name: RMQ_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: ingestor-secret
+                  key: RMQ_USERNAME
+            - name: RMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ingestor-secret
+                  key: RMQ_PASSWORD
+          resources:
+            limits:
+              memory: "10Gi"
+          ports:
+            - containerPort: 5000
