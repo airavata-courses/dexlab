@@ -45,8 +45,6 @@ spec:
                   name: ingestor-secret
                   key: RMQ_PASSWORD
           resources:
-            #requests:
-            #memory: "700Mi"
             limits:
               memory: "10Gi"
           ports:
