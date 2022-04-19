@@ -43,7 +43,7 @@ jobs:
       uses: mr-smithers-excellent/docker-build-push@v5
       with:
         image: sbmthakur/ingestor
-        tags: latest,${{ github.ref }}
+        tags: latest,${{ github.sha }}
         registry: docker.io
         directory: ingestor
         dockerfile: ingestor/Dockerfile
