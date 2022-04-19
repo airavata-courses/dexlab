@@ -24,6 +24,6 @@ jobs:
         git config --local user.name "Github action"
         git checkout cd
         git commit --allow-empty -m "Test commit from action"
-        git push sbm cd
+        git push origin cd
       
       
