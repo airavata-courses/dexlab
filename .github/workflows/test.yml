@@ -39,13 +39,15 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: build and push docker image
+      id: docker-build
       uses: mr-smithers-excellent/docker-build-push@v5
       with:
         image: sbmthakur/ingestor
-        tags: latest
+        tags: latest,${{ github.ref }}
         registry: docker.io
         directory: ingestor
         dockerfile: ingestor/Dockerfile
         username: sbmthakur
         password: 4ef776e8-82d4-471e-830d-0069bfa99d47
-             
+    - name: Print docker image tags
+      run: echo "Image tags ${{ steps.docker-build.outputs.tags }}"
