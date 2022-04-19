@@ -23,7 +23,7 @@ jobs:
         git config --local user.email "sbmthakur@gmail.com"
         git config --local user.name "Github action"
         git checkout cd
-        sed -i -r "s/sbmthakur.*/sbmthakur/ingestor:latest/" ingestor/k8/ingestor-deployment.yml
+        sed -i -r "s/sbmthakur.*/sbmthakur\/ingestor:latest/" ingestor/k8/ingestor-deployment.yml
         git commit -a --allow-empty -m "Test commit from action" 
         git push origin cd
       
