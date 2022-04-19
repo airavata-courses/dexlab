@@ -85,6 +85,5 @@ def init_rabbitmq(session):
     channel.basic_qos(prefetch_count=1)
     channel.basic_consume(queue='rpc_queue', on_message_callback=on_request)
 
-    print(" [x] Awaiting RPC requests")
     thread = Thread(target = channel.start_consuming)
     thread.start()
