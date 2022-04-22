@@ -9,7 +9,7 @@ class Token {
 
     verify() {
         try {
-            this.decoded = JWT.verify(this.user_token, 'dexlab', {
+            this.decoded = JWT.verify(this.user_token, process.env.tokenPassword, {
                 ignoreExpiration: true
             });
             let expiry = moment.unix(this.decoded.iat).add(24, 'hours');
@@ -26,7 +26,7 @@ class Token {
 
 
 let generateToken = (data) => {
-    var token = JWT.sign(data, 'dexlab', {
+    var token = JWT.sign(data, process.env.tokenPassword, {
         algorithm: 'HS256'
     });
     return token;

@@ -7,7 +7,7 @@ let runtime = {
 module.exports.init = async () => {
     console.log("Connecting to redis")
     runtime.db.redis = Redis.createClient({
-        "host": "127.0.0.1",
+        "host": process.env.redisIp,
         "port": "6379",
         // "password": process.env.redis_password
     });

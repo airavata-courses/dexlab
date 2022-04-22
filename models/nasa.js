@@ -17,7 +17,7 @@ function plot(data, cache_key) {
             console.log(data, new Date())
             console.log('')
             const uuid = uuidvv4();
-            let connection = await amqp.connect('amqp://ingestor:dexlab@149.165.159.22');
+            let connection = await amqp.connect(process.env.rabbitIp);
             let rabbitmq = await connection.createChannel();
             let rabbit_q = await rabbitmq.assertQueue('', {
                 exculsive: true
@@ -31,7 +31,7 @@ function plot(data, cache_key) {
                 let b64 = Buffer.from(msg.content).toString('base64');
                 console.log(msg.content, b64)
                 connection.close();
-                await redis.setex(cache_key, 10000000, b64)
+                await redis.setex(cache_key, 10000, b64)
                 resolve(b64);
             }, {
                 noAck: true
