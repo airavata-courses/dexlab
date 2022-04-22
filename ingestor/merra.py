@@ -66,7 +66,7 @@ def plot(session, filename, year, month, plot_type):
         cb = plt.colorbar(ax=ax, orientation="vertical", pad=0.02, aspect=16, shrink=0.8)
         cb.set_label('K',size=12,rotation=0,labelpad=15)
         cb.ax.tick_params(labelsize=10)
-        print("Saving the plot")
+        #print("Saving the plot")
         fname = f"plot_{filename}.png"
         plt.savefig(fname)
         return fname
