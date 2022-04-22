@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: pythonservice
-          image: sbmthakur/ingestor:40c281c188ecd53d48b7aca330534717d2d99c2c
+          image: sbmthakur/ingestor:7bc38a40dab8f4524ec21ab1bb92196df9abc9ce
           env:
             - name: RMQ_HOST
               valueFrom:
