@@ -16,7 +16,7 @@ spec:
       hostNetwork: true
       containers:
         - name: pythonservice
-          image: sbmthakur/ingestor:419240707e193758d27d17969132fb12177e1587
+          image: sbmthakur/ingestor:7bc38a40dab8f4524ec21ab1bb92196df9abc9ce
           env:
             - name: RMQ_HOST
               valueFrom:
