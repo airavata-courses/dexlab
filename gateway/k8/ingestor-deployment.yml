@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodeservice
+spec:
+  selector:
+    matchLabels:
+      run: nodeservice
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        run: nodeservice
+    spec:
+      containers:
+        - name: nodeservice
+          image: kausau/gateway:5678dc3
+          env:
+            - name: redisIp
+              valueFrom:
+                secretKeyRef:
+                  name: gateway-secret
+                  key: redisIp
+            - name: rabbitIp
+              valueFrom:
+                secretKeyRef:
+                  name: gateway-secret
+                  key: rabbitIp
+            - name: tokenPassword
+              valueFrom:
+                secretKeyRef:
+                  name: gateway-secret
+                  key: tokenPassword
+          ports:
+            - containerPort: 3001
