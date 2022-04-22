@@ -48,7 +48,6 @@ def init_rabbitmq(session):
 
     def on_request(ch, method, props, body):
 
-        print(body)
 
         try:
             data = json.loads(body)
