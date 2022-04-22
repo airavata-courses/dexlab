@@ -6,14 +6,12 @@ spec:
   selector:
     matchLabels:
       run: pythonservice
-  replicas: 1
-  revisionHistoryLimit: 0
+  replicas: 3
   template:
     metadata:
       labels:
         run: pythonservice
     spec:
-      hostNetwork: true
       containers:
         - name: pythonservice
           image: sbmthakur/ingestor:40c281c188ecd53d48b7aca330534717d2d99c2c
@@ -45,8 +43,5 @@ spec:
                 secretKeyRef:
                   name: ingestor-secret
                   key: RMQ_PASSWORD
-          resources:
-            limits:
-              memory: "10Gi"
           ports:
             - containerPort: 5000
