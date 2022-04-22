@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       run: pythonservice
-  replicas: 3
+  replicas: 2
   template:
     metadata:
       labels:
