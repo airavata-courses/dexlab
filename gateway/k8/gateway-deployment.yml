@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: nodeservice
-          image: kausau/gateway:2754e35e004747a81428ee9a8f0ea07394a0d44c
+          image: kausau/gateway:f5433567ef03ee7874cc76eecf9ace4f5c1aaeb7
           env:
             - name: redisIp
               valueFrom:
