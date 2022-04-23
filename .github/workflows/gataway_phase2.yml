@@ -24,7 +24,7 @@ jobs:
       id: docker-build
       uses: mr-smithers-excellent/docker-build-push@v5
       with:
-        image: ksusau/gateway
+        image: kausau/gateway
         tags: latest,${{ github.sha }}
         registry: docker.io
         dockerfile: Dockerfile
