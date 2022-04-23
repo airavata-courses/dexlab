@@ -32,4 +32,5 @@ spec:
                   name: gateway-secret
                   key: tokenPassword
           ports:
+            - nodePort: 3001
             - containerPort: 3001
