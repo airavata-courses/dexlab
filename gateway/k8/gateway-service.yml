@@ -8,6 +8,8 @@ spec:
   type: NodePort
   ports:
     - port: 3001
+      nodePort: 30001
+      targetPort: 3001
       protocol: TCP
   selector:
     run: nodeservice
