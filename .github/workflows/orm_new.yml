@@ -1,0 +1,41 @@
+name: orm_phase2
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ ORM ]
+    
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    #strategy:
+    #  fail-fast: false
+    #  matrix:
+    #    python-version: ["3.8"]
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: build and push docker image
+      id: docker-build
+      uses: mr-smithers-excellent/docker-build-push@v5
+      with:
+        image: sansbailmare/nexrad_orm_update
+        tags: latest,${{ github.sha }}
+        registry: docker.io
+        directory: database
+        dockerfile: database/Dockerfile
+        username: sansbailmare
+        password: ecd89517-edd5-4cad-98e6-0fb1e7a669fe
+    - name: Make a push for CD
+      run: |
+        git config --local user.email "bailmaresanket310@gmail.com"
+        git config --local user.name "Github action"
+        git checkout cd
+        sed -i -r "s/sansbailmare.*/sansbailmare\/nexrad_orm_update:${{ github.sha }}/" orm/k8/orm-deployment.yml
+        git commit -a --allow-empty -m "Update image for deployment" 
+        git push origin cd

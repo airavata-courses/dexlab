@@ -23,11 +23,11 @@ jobs:
     - name: build and push docker image
       uses: mr-smithers-excellent/docker-build-push@v5
       with:
-        image: kausau/nexrad_orm_update
+        image: sansbailmare/nexrad_orm_update
         tags: latest
         registry: docker.io
         directory: database
         dockerfile: database/Dockerfile
-        username: kausau
-        password: 36706a13-98ab-4363-800f-fbd9415216d6
+        username: sansbailmare
+        password: ecd89517-edd5-4cad-98e6-0fb1e7a669fe
              

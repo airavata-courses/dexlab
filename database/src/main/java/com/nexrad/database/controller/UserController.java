@@ -1,8 +1,13 @@
 package com.nexrad.database.controller;
 
-import org.springframework.web.bind.annotation.RestController;	
+import org.springframework.web.bind.annotation.RestController;
+
+import com.nexrad.database.model.JwtRequest;
+import com.nexrad.database.model.JwtResponse;
 import com.nexrad.database.model.User;
+import com.nexrad.database.service.JwtUserDetailsService;
 import com.nexrad.database.service.UserService;
+import com.nexrad.database.utils.JwtTokenUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,10 +20,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @RestController
@@ -27,6 +42,18 @@ import org.springframework.http.ResponseEntity;
 public class UserController {
 	@Autowired
 	private UserService usrService;
+	@Autowired
+	private PasswordEncoder bcryptEncoder;
+	
+
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
+	
+	@Autowired
+	private JwtUserDetailsService userDetailsService;
+	
+	@Autowired
+	private AuthenticationManager authenticationManager;
 		
 	@ApiOperation(value = "Get list of all the Users in the System ", response = Iterable.class)
 	@ApiResponses(value = { 
@@ -41,10 +68,18 @@ public class UserController {
 	
 	@ApiOperation(value = "Get sepcific User detail based on his UserID", response = Iterable.class)
 	@GetMapping(value="/getuser/{userID}")
-	ResponseEntity<User> getUser(@PathVariable("userID") String uID) throws Exception {
+	ResponseEntity<?> getUser(@PathVariable("userID") String uID) throws Exception {
 		try {
 		User user = usrService.findByUserID(uID).orElseThrow(()->new Exception("No User with userID : "+uID));
-		return ResponseEntity.ok().body(user);
+		final String token = jwtTokenUtil.generateToken(user.getEmail());
+		Map<String, Object> map = new HashMap<>();
+		map.put("userID",user.getUserID());
+		map.put("name",user.getName());
+		map.put("email",user.getEmail());
+		map.put("password",user.getPassword());
+		map.put("activities",user.getActivities());
+	    map.put("token", token);
+		return ResponseEntity.ok().body(map);
 		}
 		catch(Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new User());
@@ -70,8 +105,13 @@ public class UserController {
     ResponseEntity<?> User(@RequestBody User user) {
 		try {
 		System.out.println(user);
+		user.setPassword(bcryptEncoder.encode(user.getPassword()));
         User addedusr = usrService.save(user);
-        return ResponseEntity.ok().body("Added user: "+ addedusr);
+		final String token = jwtTokenUtil.generateToken(user.getEmail());
+		Map<String, Object> map = new HashMap<>();
+	    map.put("token", token);
+		return ResponseEntity.ok().body(map);
+
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -80,4 +120,21 @@ public class UserController {
 		}
 		
     }
+	
+	@GetMapping(value="/check/{emailId}")
+	ResponseEntity<?> User(@PathVariable String emailId) {
+		try {
+	        User user = usrService.findByEmail(emailId)
+	                                    .orElseThrow(()->new Exception("No User with email : "+emailId));
+	        Map<String, Object> map = new HashMap<>();
+		    map.put("Found", true);
+	        return ResponseEntity.ok().body(map);
+			}
+			catch(Exception e) {
+				Map<String, Object> map = new HashMap<>();
+			    map.put("Found", false);
+				return ResponseEntity.ok().body(map);
+			}
+	}
+	
 }

@@ -29,11 +29,14 @@ public class UserActivityController {
 	@ApiOperation(value = "Get User Interaction details from System ", response = Iterable.class)
 	@GetMapping(value="/getactivity/{userID}")
 	ResponseEntity<?> getUser(@PathVariable("userID") String uID) throws Exception {
+		
 		try {
 		UserActivity userActivity = usrActivityService.findUserActivity(uID).orElseThrow(()->new Exception("No User with userID : "+uID));
+		
 		return ResponseEntity.ok().body(userActivity);
 		}
 		catch(Exception e) {
+			System.out.println(e);
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Could not get userActivity as either UserId doesn't exist or SQL error occurred.");
 		}
 		
@@ -46,7 +49,18 @@ public class UserActivityController {
 			
 			String uid = userActivity.get("userID").asText();
 			String ulogs = userActivity.get("userLogs").asText();
+			System.out.println("**********Printing Ulogs*********************");
+			System.out.println(ulogs);
+			
+			
+			
+		
 	        UserActivity addedActivity = usrActivityService.addUserActivity(uid,ulogs);
+	        //UserActivity Activity = usrActivityService.findUserActivity(uid).orElseThrow(()->new Exception("No User with userID : "+uid));
+	       //System.out.println("**********Printing Activity*********************");
+			//System.out.println(Activity);
+	        
+	        
 	        return ResponseEntity.ok().body("Added activity: "+ addedActivity);
 		}
 		catch(Exception e) {

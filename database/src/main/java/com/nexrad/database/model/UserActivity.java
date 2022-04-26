@@ -25,7 +25,7 @@ public class UserActivity {
 	private Long userActivityID;
 	
 	
-	@Column(nullable=false, length = 1000)
+	@Column(nullable=false, length = 10000000)
 	private String userLogs;
 	
 	@JsonBackReference
