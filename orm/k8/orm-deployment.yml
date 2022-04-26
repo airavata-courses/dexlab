@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apiservice
+spec:
+  selector:
+    matchLabels:
+      run: apiservice
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        run: apiservice
+    spec:
+      containers:
+        - name: apiservice
+          image: sansbailmare/nexrad_orm_update:12354
+          ports:
+            - containerPort: 8000
