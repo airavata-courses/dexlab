@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: apiservice
-          image: sansbailmare/nexrad_orm_update:12354
+          image: sansbailmare/nexrad_orm_update:71837c84cbf3f8c695c3573e32b29e3929abfbf2
           ports:
             - containerPort: 8000
