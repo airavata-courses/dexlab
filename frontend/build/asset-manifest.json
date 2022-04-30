@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/static/css/main.ee0c97b1.css",
+    "main.js": "/static/js/main.fc91ac64.js",
+    "static/media/gesdisc_marble.jpg": "/static/media/gesdisc_marble.947fa8a072793f6d0a2d.jpg",
+    "index.html": "/index.html",
+    "main.ee0c97b1.css.map": "/static/css/main.ee0c97b1.css.map",
+    "main.fc91ac64.js.map": "/static/js/main.fc91ac64.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ee0c97b1.css",
+    "static/js/main.fc91ac64.js"
+  ]
+}

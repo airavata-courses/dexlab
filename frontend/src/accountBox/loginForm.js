@@ -33,7 +33,7 @@ class LoginForm extends Component {
   }
   login(event) {
     console.log("hellooooooo");
-    const apiUrl = "http://localhost:3001/user/login";
+    const apiUrl = "http://192.168.49.2:30001/user/login";
     const data = { email: this.state.Email, password: this.state.Password };
     axios
       .post(apiUrl, data)
@@ -43,12 +43,12 @@ class LoginForm extends Component {
         if (result.data.message == "Success") {
           this.props.history.push("/tabs", { ...user });
           // console.log(window.location.assign(`http://localhost:3000/tabs?userid=${result.data.userid}`))};
-          // console.log(window.location.assign(`http://localhost:3001/tabs?userid=${result.data.userid}`))}
+          // console.log(window.location.assign(`http://192.168.49.2:30001/tabs?userid=${result.data.userid}`))}
         }
       })
       .catch((error) => {
         alert("Invalid User");
-        console.log(window.location.assign("http://localhost:3001/signup"));
+        console.log(window.location.assign("http://192.168.49.2:30001/signup"));
         console.log(error);
       });
   }

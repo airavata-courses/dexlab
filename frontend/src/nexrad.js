@@ -24,9 +24,9 @@ const Nexrad = (props) => {
   const [val, setVal] = useState(opt[0]);
   const [img, setImage] = useState();
   const [userID, setUserID] = useState();
-  let radarURL = "http://localhost:3001/radar/get/";
-  const imageURL = "http://localhost:3001/radar/plot";
-  const activityUrl = "http://localhost:3001/activity/set";
+  let radarURL = "http://192.168.49.2:30001/radar/get/";
+  const imageURL = "http://192.168.49.2:30001/radar/plot";
+  const activityUrl = "http://192.168.49.2:30001/activity/set";
   const getImage = () => {
     console.log("get");
     let data = {

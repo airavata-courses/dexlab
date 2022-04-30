@@ -16,9 +16,9 @@ const Dashboard = () => {
   const [val, setVal] = useState(opt[0]);
   const [img, setImage] = useState();
   const [userID, setUserID] = useState();
-  const radarURL = "http://localhost:3001/radar/get";
-  const imageURL = "http://localhost:3001/radar/plot";
-  const activityUrl = "http://localhost:3001/activity/set";
+  const radarURL = "http://192.168.49.2:30001/radar/get";
+  const imageURL = "http://192.168.49.2:30001/radar/plot";
+  const activityUrl = "http://192.168.49.2:30001/activity/set";
   const getImage = () => {
     let data = {
       date: date.toISOString().split("T")[0],
@@ -110,7 +110,7 @@ const Dashboard = () => {
     let userid = params.get("userid");
     console.log(
       window.location.assign(
-        `http://localhost:3001/UserHistory?userid=${userid}`
+        `http://192.168.49.2:30001/UserHistory?userid=${userid}`
       )
     );
   };

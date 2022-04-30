@@ -41,8 +41,8 @@ const NASA = (props) => {
   let imag = img;
   const [userID, setUserID] = useState();
 
-  let imageURL = "http://localhost:3001/radar/nasa";
-  const activityUrl = "http://localhost:3001/activity/set";
+  let imageURL = "http://192.168.49.2:30001/radar/nasa";
+  const activityUrl = "http://192.168.49.2:30001/activity/set";
   const getImage = () => {
     imageURL = `${imageURL}?year=${val1}&month=${mon1}&type=${rad1}`;
     console.log(imageURL);

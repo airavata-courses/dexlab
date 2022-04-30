@@ -5,7 +5,7 @@ import 'react-dropdown/style.css';
 import { withRouter } from "react-router-dom";
 import { Button, List } from 'reactstrap';
 const UserHistory  = (props) => {
-    const actionsUrl = "http://localhost:3001/activity/get";
+    const actionsUrl = "http://192.168.49.2:30001/activity/get";
     console.log(props.location.state)
     // const [action, setaction] = useState();
     //   const [action2, setaction2] = useState();

@@ -45,7 +45,7 @@ class Reg extends Component {
     console.log(this.state.Password, this.state.Confirm_Password)
     if (this.state.Password != this.state.Confirm_Password){
       alert("Password doesn't match, re-enter password")
-      console.log(window.location.assign("http://localhost:3001/signup"))
+      console.log(window.location.assign("http://192.168.49.2:30001/signup"))
     }
     let data = {
         name: this.state.Name,
@@ -53,7 +53,7 @@ class Reg extends Component {
         email: this.state.Email
       }
     console.log("In here", data)
-    fetch('http://localhost:3001/user/signup', {
+    fetch('http://192.168.49.2:30001/user/signup', {
       method: 'post',
       headers: {
         'Accept': 'application/json',
@@ -70,7 +70,7 @@ class Reg extends Component {
     })
     .then(value => {console.log(value);
       if (value.message == 'Success'){
-            console.log(window.location.assign(`http://localhost:3001/dashboard?userid=${value.userid}`))}
+            console.log(window.location.assign(`http://192.168.49.2:30001/dashboard?userid=${value.userid}`))}
         else if(Response.Status == 400)
           alert('User already exist')
         else

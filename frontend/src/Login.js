@@ -22,17 +22,17 @@ class Login extends Component {
         this.setState({ Password: event.target.value })
     }
     login(event) {
-        const apiUrl = "http://localhost:3001/user/login"; 
+        const apiUrl = "http://192.168.49.2:30001/user/login"; 
         const data = { email:this.state.Email, password: this.state.Password };    
             axios.post(apiUrl, data)    
             .then((result) => {    
                 const user = result.data;  
                 if (result.data.message == 'Success'){
-                    console.log(window.location.assign(`http://localhost:3001/dashboard?userid=${result.data.userid}`))}
+                    console.log(window.location.assign(`http://192.168.49.2:30001/dashboard?userid=${result.data.userid}`))}
             })
             .catch(error => {
                 alert('Invalid User');
-                console.log(window.location.assign("http://localhost:3001/login"))
+                console.log(window.location.assign("http://192.168.49.2:30001/login"))
                 console.log(error);
             });
           

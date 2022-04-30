@@ -53,7 +53,7 @@ class SignupForm extends Component {
     console.log(this.state.Password, this.state.Confirm_Password);
     if (this.state.Password != this.state.Confirm_Password) {
       alert("Password doesn't match, re-enter password");
-      console.log(window.location.assign("http://localhost:3001/signup"));
+      console.log(window.location.assign("http://192.168.49.2:30001/signup"));
     }
     let data = {
       name: this.state.Name,
@@ -61,7 +61,7 @@ class SignupForm extends Component {
       email: this.state.Email,
     };
     console.log("In here", data);
-    fetch("http://localhost:3001/user/signup", {
+    fetch("http://192.168.49.2:30001/user/signup", {
       method: "post",
       headers: {
         Accept: "application/json",
