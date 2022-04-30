@@ -45,10 +45,8 @@ router.get('/nasa', async (req, res) => {
         if (image) {
             plot = image;
         } else {
-
-
             data = {
-                month: req.query.month,
+                month: (req.query.month.length < 2) ? ("0" + req.query.month) : req.query.month,
                 year: req.query.year,
                 plot_type: req.query.type
             }
