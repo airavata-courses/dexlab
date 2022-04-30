@@ -6,7 +6,7 @@ name: ingestor_build
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ ingestor ]
+    branches: [ nasa-ingestor ]
     
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -28,8 +28,8 @@ jobs:
           auto-activate-base: false
       - run: |
           cd ingestor
-          pylint server.py
-          pytest
+          #pylint server.py
+          #pytest
   build:
     runs-on: ubuntu-latest
     #strategy:
@@ -38,14 +38,24 @@ jobs:
     #    python-version: ["3.8"]
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - name: build and push docker image
+      id: docker-build
       uses: mr-smithers-excellent/docker-build-push@v5
       with:
         image: sbmthakur/ingestor
-        tags: latest
+        tags: latest,${{ github.sha }}
         registry: docker.io
         directory: ingestor
         dockerfile: ingestor/Dockerfile
         username: sbmthakur
         password: 4ef776e8-82d4-471e-830d-0069bfa99d47
-             
+    - name: Make a push for CD
+      run: |
+        git config --local user.email "sbmthakur@gmail.com"
+        git config --local user.name "Github action"
+        git checkout cd
+        sed -i -r "s/sbmthakur.*/sbmthakur\/ingestor:${{ github.sha }}/" ingestor/k8/ingestor-deployment.yml
+        git commit -a --allow-empty -m "Update image for deployment" 
+        git push origin cd

@@ -1,10 +1,12 @@
 from flask import Flask, jsonify, request, send_file
 import nexradaws
 import os
+import logging
 from flasgger import Swagger, swag_from
 from ingestor import save_file
 from merra import SessionWithHeaderRedirection, download_nc4
 from datetime import date
+from message_queue import init_rabbitmq
 
 # pylint: disable=unused-argument
 def create_app(test_config=None):
@@ -21,6 +23,12 @@ def create_app(test_config=None):
         raise SystemExit("Credentials for earthdata not set")
 
     app = Flask(__name__)
+
+    try:
+        init_rabbitmq(session)
+    except Exception as e:
+        logging.exception(f"Rabbit MQ not initialized {str(e)}")
+        raise SystemExit
 
     template = {
       "swagger": "2.0",
