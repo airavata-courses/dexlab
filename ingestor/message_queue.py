@@ -75,6 +75,12 @@ def init_rabbitmq(session):
         except ValueError:
             data = { 'error_message': 'Invalid year,month or plot_type' }
             return send_reply(ch, method, props, json.dumps(data))
+        except OSError:
+            data = { 'error_message': 'Future month values not permitted' }
+            return send_reply(ch, method, props, json.dumps(data))
+        except TypeError:
+            data = { 'error_message': 'Invalid data type' }
+            return send_reply(ch, method, props, json.dumps(data))
 
 
         data = read_file(plot_file)
